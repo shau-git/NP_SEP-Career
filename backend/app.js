@@ -6,7 +6,7 @@ const cors = require("cors")
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://np-sep-career.vercel.app', 'https://np-sep-career.onrender.com'],
+    origin: ['https://np-sep-career.vercel.app', 'https://np-sep-career.onrender.com', 'http://localhost:5173'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Add all methods you use
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
