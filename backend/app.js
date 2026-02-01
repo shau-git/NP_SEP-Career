@@ -5,14 +5,14 @@ const PORT = process.env.PORT || 3012;
 const cors = require("cors")
 
 const app = express();
-app.use(express.urlencoded({extended: true}))
-app.use(express.json());
 app.use(cors({
     origin: ['http://localhost:5173', 'https://np-sep-career.vercel.app', 'https://np-sep-career.onrender.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Add all methods you use
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
 }))
+app.use(express.urlencoded({extended: true}))
+app.use(express.json());
 
 
 // errorHandling
