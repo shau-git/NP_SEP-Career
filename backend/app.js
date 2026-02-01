@@ -17,7 +17,7 @@ app.use(cors({
 
 // errorHandling
 const errorHandlerMiddleware = require("./middlewares/errorHandler")
-const notFound = require("./middlewares/not-Found")
+const notFound = require("./middlewares/not-found")
 
 
 // import routers
