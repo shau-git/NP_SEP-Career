@@ -1,5 +1,6 @@
-import Joi from 'joi';
-import requiredMsg from '@/lib/validators/utils/required_message';
+const Joi = require("joi")
+const requiredMsg = require("./utils/required_message")
+const { joiErrorMessage } = require("./utils/error_message");
 
 // allowed fields ONLY
 const educationFields = {
@@ -59,7 +60,7 @@ const forbiddenFields = {
 };
 
 // POST schema (required + forbidden)
-export const createEducationSchema = Joi.object({
+const createEducationSchema = Joi.object({
     institution: educationFields.institution.required().messages(requiredMsg("institution")),
     field_of_study: educationFields.field_of_study.required().messages(requiredMsg("field_of_study")),
     qualification: educationFields.qualification.required().messages(requiredMsg("qualification")),
@@ -71,12 +72,39 @@ export const createEducationSchema = Joi.object({
 });
 
 // PUT / PATCH schema (partial + forbidden)
-export const updateEducationSchema = Joi.object({
+const updateEducationSchema = Joi.object({
     ...educationFields,
     ...forbiddenFields,
 }).min(1);
 
 
-    
+const validateCreate = (req, res, next) => {
+    const { error } = createEducationSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
 
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+   
+
+const validateUpdate = (req, res, next) => {
+    const { error } = updateEducationSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+    
+module.exports = {
+    createEducationSchema: validateCreate,
+    updateEducationSchema: validateUpdate
+}
    

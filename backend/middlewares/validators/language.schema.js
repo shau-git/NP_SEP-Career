@@ -1,5 +1,6 @@
-import Joi from 'joi';
-import requiredMsg from '@/lib/validators/utils/required_message';
+const Joi = require("joi")
+const requiredMsg = require("./utils/required_message")
+const { joiErrorMessage } = require("./utils/error_message");
 
 // allowed fields ONLY
 const languageFields = {
@@ -30,19 +31,48 @@ const forbiddenFields = {
 };
 
 // POST schema (required + forbidden)
-export const createLanguageSchema = Joi.object({
+const createLanguageSchema = Joi.object({
     language: languageFields.language.required().messages(requiredMsg("language")),
     proficiency: languageFields.proficiency.required().messages(requiredMsg("proficiency")),
     ...forbiddenFields,
 });
 
 // PUT / PATCH schema (partial + forbidden)
-export const updateLanguageSchema = Joi.object({
+const updateLanguageSchema = Joi.object({
     ...languageFields,
     ...forbiddenFields,
 }).min(1);
 
 
+
+const validateCreate = (req, res, next) => {
+    const { error } = createLanguageSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+   
+
+const validateUpdate = (req, res, next) => {
+    const { error } = updateLanguageSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+  
     
 
-   
+module.exports = {
+    createLanguageSchema: validateCreate,
+    updateLanguageSchema: validateUpdate
+}

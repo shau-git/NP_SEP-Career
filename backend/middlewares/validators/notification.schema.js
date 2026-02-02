@@ -1,5 +1,6 @@
-import Joi from 'joi';
-import requiredMsg from '@/lib/validators/utils/required_message';
+const Joi = require("joi")
+const requiredMsg = require("./utils/required_message")
+const { joiErrorMessage } = require("./utils/error_message");
 
 // allowed fields ONLY
 const notificationFields = {
@@ -63,7 +64,26 @@ const forbiddenFields = {
 // });
 
 // PUT / PATCH schema (partial + forbidden)
-export const updateNotificationSchema = Joi.object({
+const updateNotificationSchema = Joi.object({
     ...notificationFields,
     ...forbiddenFields,
 }).min(1);
+
+
+
+const validateUpdate = (req, res, next) => {
+    const { error } = updateNotificationSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+  
+
+module.exports = {
+    updateNotificationSchema: validateUpdate
+}

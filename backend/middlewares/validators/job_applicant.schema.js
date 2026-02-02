@@ -1,5 +1,6 @@
-import Joi from 'joi';
-import requiredMsg from '@/lib/validators/utils/required_message';
+const Joi = require("joi")
+const requiredMsg = require("./utils/required_message")
+const { joiErrorMessage } = require("./utils/error_message");
 
 // allowed fields ONLY
 const jobApplicantFields = {
@@ -65,7 +66,7 @@ const forbiddenFields = {
 
 
 // POST schema (required + forbidden)
-export const createJobApplicantsSchema = Joi.object({
+const createJobApplicantsSchema = Joi.object({
     ...forbiddenFields,
     expected_salary: jobApplicantFields.expected_salary.required().messages(requiredMsg("expected_salary")),
     status: jobApplicantFields.status.forbidden().messages({
@@ -80,10 +81,42 @@ export const createJobApplicantsSchema = Joi.object({
 });
 
 // PUT / PATCH schema (partial + forbidden)
-export const updateJobApplicantSchema = Joi.object({
+const updateJobApplicantSchema = Joi.object({
     ...jobApplicantFields,
     ...forbiddenFields,
     expected_salary: Joi.forbidden().messages({
         'any.forbidden': 'expected_salary cannot be changed after application',
     }),
 }).min(1);
+
+
+
+const validateCreate = (req, res, next) => {
+    const { error } = createJobApplicantsSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+   
+
+const validateUpdate = (req, res, next) => {
+    const { error } = updateJobApplicantSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+
+module.exports = {
+    createJobApplicantsSchema: validateCreate,
+    updateJobApplicantSchema: validateUpdate
+}

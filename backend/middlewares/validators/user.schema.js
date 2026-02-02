@@ -1,5 +1,6 @@
-import Joi from 'joi';
-import requiredMsg from '@/lib/validators/utils/required_message';
+const Joi = require("joi")
+const requiredMsg = require("./utils/required_message")
+const { joiErrorMessage } = require("./utils/error_message");
 
 const userBase = {
     
@@ -53,7 +54,7 @@ const forbiddenFields = {
  
 
 // POST schema (required + forbidden)
-export const createUserSchema = Joi.object({
+const createUserSchema = Joi.object({
     ...forbiddenFields,
     name: userBase.name.required().messages(requiredMsg("name")),
     email: userBase.email.required().messages(requiredMsg("email")),
@@ -62,11 +63,40 @@ export const createUserSchema = Joi.object({
 
 
 // PUT / PATCH schema (partial + forbidden)
-export const updateUserSchema = Joi.object({
+const updateUserSchema = Joi.object({
     ...userBase,
     ...forbiddenFields,
     email: Joi.forbidden().messages({'any.unknown': "You cannot change email."})
 }).min(1);
     
 
+
+const validateCreate = (req, res, next) => {
+    const { error } = createUserSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
    
+
+const validateUpdate = (req, res, next) => {
+    const { error } = updateUserSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+  
+module.exports = {
+    createUserSchema: validateCreate,
+    updateUserSchema : validateUpdate
+}

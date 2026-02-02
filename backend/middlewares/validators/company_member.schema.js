@@ -1,5 +1,6 @@
-import Joi from 'joi';
-import requiredMsg from '@/lib/validators/utils/required_message';
+const Joi = require("joi")
+const requiredMsg = require("./utils/required_message")
+const { joiErrorMessage } = require("./utils/error_message");
 
 // allowed fields ONLY
 const companyMemberFields = {
@@ -44,7 +45,7 @@ const forbiddenFields = {
 
 
 // POST schema (required + forbidden)
-export const createCompanyMemberSchema = Joi.object({
+const createCompanyMemberSchema = Joi.object({
     ...forbiddenFields,
     role: companyMemberFields.role.required().messages(requiredMsg("role")),
     user_id: companyMemberFields.user_id.required().messages(requiredMsg("user_id")),
@@ -54,10 +55,42 @@ export const createCompanyMemberSchema = Joi.object({
 });
 
 // PUT / PATCH schema (partial + forbidden)
-export const updateCompanyMemberSchema = Joi.object({
+const updateCompanyMemberSchema = Joi.object({
     ...companyMemberFields,
     ...forbiddenFields,
      user_id: Joi.forbidden().messages({
         'any.forbidden': 'Changing user_id is not allowed',
     }),
 }).min(1);
+
+
+
+const validateCreate = (req, res, next) => {
+    const { error } = createCompanyMemberSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+   
+
+const validateUpdate = (req, res, next) => {
+    const { error } = updateCompanyMemberSchema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: false
+    });
+
+    if (error) return res.status(400).json({ message: joiErrorMessage(error) });
+
+    // Pass control to the next middleware or route handler.
+    next();
+};
+
+module.exports = {
+    createCompanyMemberSchema: validateCreate,
+    updateCompanyMemberSchema: validateUpdate
+}

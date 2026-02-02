@@ -1,17 +1,17 @@
-import {createSkillSchema, updateSkillSchema} from "@/lib/validators/skill.schema"
-import {createExperienceSchema, updateExperienceSchema} from "@/lib/validators/experience.schema"
-import {createEducationSchema, updateEducationSchema} from "@/lib/validators/education.schema"
-import {createCompanySchema, updateCompanySchema} from "@/lib/validators/company.schema"
-import {createCompanyMemberSchema, updateCompanyMemberSchema} from "@/lib/validators/company_member.schema"
-import {createJobPostSchema, updateJobPostSchema} from "@/lib/validators/job_post.schema"
-import {createJobApplicantsSchema, updateJobApplicantSchema} from "@/lib/validators/job_applicant.schema"
-import { updateNotificationSchema } from "@/lib/validators/notification.schema"
-import {createUserSchema, updateUserSchema} from "@/lib/validators/user.schema"
-import {createLanguageSchema, updateLanguageSchema} from "@/lib/validators/language.schema"
-import {createLinkSchema, updateLinkSchema} from "@/lib/validators/link.schema"
+const {createSkillSchema, updateSkillSchema} = require("../middlewares/validators/skill.schema")
+const {createExperienceSchema, updateExperienceSchema} = require("../middlewares/validators/experience.schema")
+const {createEducationSchema, updateEducationSchema} = require("../middlewares/validators/education.schema")
+const {createCompanySchema, updateCompanySchema} = require("../middlewares/validators/company.schema")
+const {createCompanyMemberSchema, updateCompanyMemberSchema} = require("../middlewares/validators/company_member.schema")
+const {createJobPostSchema, updateJobPostSchema} = require("../middlewares/validators/job_post.schema")
+const {createJobApplicantsSchema, updateJobApplicantSchema} = require("../middlewares/validators/job_applicant.schema")
+const { updateNotificationSchema } = require("../middlewares/validators/notification.schema")
+const {createUserSchema, updateUserSchema} = require("../middlewares/validators/user.schema")
+const {createLanguageSchema, updateLanguageSchema} = require("../middlewares/validators/language.schema")
+const {createLinkSchema, updateLinkSchema} = require("../middlewares/validators/link.schema")
 
 
-export {
+module.exports =  {
     createSkillSchema,
     updateSkillSchema,
 

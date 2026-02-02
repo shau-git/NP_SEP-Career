@@ -1,3 +1,4 @@
-export default function requiredMsg(field) {
+function requiredMsg(field) {
     return {"any.required": `${field} is required`}
 }
+module.exports = requiredMsg

@@ -1,7 +1,7 @@
 const express = require('express');
 const sequelize = require('./db/connect');
-require('dotenv').config(); 
-const PORT = process.env.PORT || 3012; 
+require('dotenv').config();
+const PORT = process.env.PORT || 3000; 
 const cors = require("cors")
 
 const app = express();
@@ -22,11 +22,26 @@ const notFound = require("./middlewares/not-found")
 
 // import routers
 const jobpost_router = require("./routers/jobpost_router")
+const user_router = require("./routers/user_router")
+const auth_router = require("./routers/auth_router")
+const experience_router = require("./routers/experience_router")
+const education_router = require("./routers/education_router")
+const skill_router = require("./routers/skill_router")
+const link_router = require("./routers/link_router")
+const language_router = require("./routers/language_router")
+const image_router = require("./routers/image_router")
 
 
 // routes
+app.use('/api/login', auth_router)
 app.use('/api/jobpost', jobpost_router)
-
+app.use('/api/user', user_router)
+app.use('/api/experience', experience_router)
+app.use('/api/education', education_router)
+app.use('/api/skills', skill_router)
+app.use('/api/link', link_router)
+app.use('/api/language', language_router)
+app.use('/api/image', image_router)
 
 // handling error
 app.use(notFound) // all not found route will be catched by this middleware

@@ -44,6 +44,7 @@ const JobApplicant = sequelize.define('JobApplicant', {
 module.exports = JobApplicant;
 
 // Associations
+const User = require('./user');
 const JobPost = require('./jobpost');
+JobApplicant.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 JobApplicant.belongsTo(JobPost, { foreignKey: 'job_post_id', as: 'job_post' });
-// Note: You'll also need to require your User model here to complete the user relation
