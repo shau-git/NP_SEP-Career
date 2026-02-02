@@ -6,7 +6,7 @@ const userBase = {
     
     name: Joi.string().min(1).max(50).trim().messages({
         "string.base": "namemust be a string",
-        "string.empty": "namecannot be empty",
+        "string.empty": "name cannot be empty",
         "string.min": "name must be at least 1 character long",
         "string.max": "name cannot exceed 50 characters",
     }),
@@ -23,7 +23,7 @@ const userBase = {
         .messages({
             'string.email': 'Please enter a valid email address',
             'string.min': 'email must be at least 10 characters long',
-            'string.max': 'email cannot exceed 80 characters',
+            'string.max': 'email cannot exceed 65 characters',
     }),
     password: Joi.string().min(5).trim()
         .messages({

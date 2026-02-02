@@ -34,7 +34,7 @@ const Profile = ({ session, token, user, user_id, setUser, Camera, MapPin, Brief
                 // clear edit mode
                 toast.success(`${field} updated successfully`);
             } else {
-                toast.error(data.message)
+                toast.error(`${field} update Failure`)
             }
             
         } catch (error) {
@@ -50,7 +50,7 @@ const Profile = ({ session, token, user, user_id, setUser, Camera, MapPin, Brief
     const handleSaveRole = () => {
         handleSave({role: roleDraft}, "role")
     }
-//bg-linear-to-r from-purple-500/20 to-pink-500/20
+
     return (
         <div className="pt-20">
             <div className="max-w-7xl mx-auto px-5 py-9">
@@ -69,74 +69,6 @@ const Profile = ({ session, token, user, user_id, setUser, Camera, MapPin, Brief
                                 )}
                             </div>
 
-                            {/* <CldUploadWidget 
-                                uploadPreset="cloudinary-test"   
-                                signatureEndpoint="/api/image/sign-image" // to "sign-in" to cloudinary
-                                options={{
-                                    // This creates: uploads / [userId] / profile_pics in cloudinary
-                                    folder: `nextjs/profile_pics`, 
-                                    // This physically resizes the image BEFORE storage
-                                    width: 1200, 
-                                    height: 1200, 
-                                    crop: 'limit', // Scales down but won't upscale small images
-                                    quality: 'auto',
-                                }}
-
-                                // to toast out the error
-                                onQueuesStart={(error, result) => {
-                                    console.log('Upload started...', result);
-                                }}
-                                onSuccess={async (result) => {
-                                    // Step 3: Save this URL to your database here
-                                    if (result.info && typeof result.info !== "string") {
-                                        try {
-                                            const response = await fetch('/api/image/uploadimage', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({
-                                                    newImageUrl: result.info?.secure_url,
-                                                    newPublicId: result.info.public_id
-                                                })
-                                            });
-                                            const data = await response.json()
-                                            const newImage = data.data
-
-                                            if(response.status === 200) {
-                                                // 1. Update the local React state (changes the UI immediately)
-                                                setUser(prevUser => ({...prevUser, image: newImage}))
-                                                
-                                                // 2. Update the NextAuth session (syncs the session cookie)
-                                                if (update) {
-                                                    await update({
-                                                        ...session,
-                                                        user: {
-                                                            ...session.user,
-                                                            image: newImage
-                                                        }
-                                                    });
-                                                    //window.dispatchEvent(new Event("visibilitychange"));
-                                                }
-                                                toast.success(data.message)
-                                            } else {
-                                                toast.error(data.message)
-                                            }
-                                        } catch (error) {
-                                            toast.error(error)
-                                        }
-                                    }
-                                }}
-                                onError={(error) => {
-                                    console.error("Upload error:", error);
-                                    toast.error("Upload error", error)
-                                }}
-                            >
-                                {session.user_id == user_id && (({ open }) => (
-                                    <button onClick={() => open()} className="cursor-pointer absolute bottom-2 right-1 w-11 h-11 bg-linear-to-r from-[rgb(102,126,234)] to-[rgb(118,75,162)] rounded-full flex items-center justify-center border-3 border-slate-900 hover:scale-110 transition-transform hover:shadow-[0_5px_15px_rgba(102,126,234,0.5)]">
-                                        <Camera className="w-4.5 h-4.5 text-white" />
-                                    </button>)
-                                )}
-                                
-                            </CldUploadWidget> */}
                             { (token && session.user_id == user_id ) && <CldWidget {...{setUser, token}}/>}
                         </div>
 
