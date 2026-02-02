@@ -85,7 +85,6 @@ const Login = ({setOpenLoginModal, active, openLoginModal}) => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log('Form submitted:', formData);
             try {
                 const reqbody = {email: formData.email, password: formData.password}
                 !isLogin && (reqbody.name = formData.name)

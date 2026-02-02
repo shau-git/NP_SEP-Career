@@ -14,9 +14,7 @@ const Features = () => {
     useEffect(() => {
         fetchJobPost()
     }, [])
-   // 
-    
-    console.log(jobPost)
+
     return (
         <section className="">
             {

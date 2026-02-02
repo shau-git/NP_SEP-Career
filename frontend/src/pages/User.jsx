@@ -22,7 +22,6 @@ const User = () => {
         const data = await response.json();
 
         if(response.status === 200) {
-            console.log(data.data)
             setUser(data.data)
         } else if (response.status === 404) {
             toast.error(data.message)

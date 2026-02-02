@@ -25,7 +25,6 @@ const Profile = ({ session, token, user, user_id, setUser, Camera, MapPin, Brief
     }
 
     const handleSave = async (reqBody, field) => {
-        console.log("token: ",token)
         try {
             const response = await updateUser("user", user_id, reqBody, token);
             const data = await response.json()
