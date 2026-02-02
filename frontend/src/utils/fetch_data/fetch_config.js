@@ -1,13 +1,14 @@
-import {getJobPost, getOneJobPost} from "./job_post/fetch_job_post"
-// import {getUser, updateUser, addUserData, deleteUserData} from "@/util/fetchData/user/fetch_user"
+import {getJobPost, getOneJobPost} from "./fetch_job_post"
+import {getUser, updateUser, addUserData, deleteUserData, authUser} from "./fetch_user"
 
 
 export {
     getJobPost,
     getOneJobPost,
 
-    // getUser,
-    // addUserData,
-    // updateUser,
-    // deleteUserData
+    getUser,
+    addUserData,
+    updateUser,
+    deleteUserData,
+    authUser
 }

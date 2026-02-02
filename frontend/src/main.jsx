@@ -9,8 +9,11 @@ import App from './App.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      <ToastContainer 
+        style={{ zIndex: 2147483647  }}   // Higher than Cloudinary widget box
+        className="custom-toast-container" 
+      />
       <App /> 
-      <ToastContainer />
     </BrowserRouter>
   </StrictMode>,
 )

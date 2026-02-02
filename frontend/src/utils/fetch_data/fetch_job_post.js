@@ -1,4 +1,4 @@
-import backend_domain from "../backend_domain";
+import backend_domain from "./backend_domain";
 
 const getJobPost = async () => {
     const response = await fetch(`${backend_domain}/api/jobpost`, {

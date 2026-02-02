@@ -2,35 +2,50 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Changed from next/navigation
 import { Bell, Building2, UserRound } from 'lucide-react';
 import Tooltip from './Tooltip'; 
-// import Login from "@/components/login/Login" // Keep your login component
+import Login from "../login/Login" //
 
-const Nav = ({ session }) => {
+const Nav = () => {
     const [openLoginModal, setOpenLoginModal] = useState(false);
     const [active, setActive] = useState('');
     const navigate = useNavigate(); // Standard React Router hook
 
     useEffect(() => {
+        const currentUser = JSON.parse(localStorage.getItem('user'));
         if (active) {
             if (active === "Home") {
                 navigate('/');
-            } else if (session) {
-                // Dynamic routing: /company/123 or /user/123
-                navigate(`/${active}/${session.user_id}`);
+            } else if (currentUser) {
+                navigate(`/${active}/${currentUser.user_id}`);
             }
         }
-    }, [active, session, navigate]);
+    }, [active]);
 
     const handleClick = (stateToActive) => { 
-        if (!session) {
+        setActive(stateToActive);
+        if (!localStorage.getItem('token')) {
             setOpenLoginModal(true);
         } else {
-            setActive(stateToActive);
+            const currentUser = JSON.parse(localStorage.getItem('user'));
+            navigate(`/${stateToActive}/${currentUser.user_id}`);
         }
     };
 
+
+    useEffect(() => {
+        if (openLoginModal) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [openLoginModal]);
+
+
     return (
         <>
-            {/* {openLoginModal && <Login {...{setOpenLoginModal, active}}/>} */}
+            {openLoginModal && <Login {...{setOpenLoginModal, active, openLoginModal}}/>}
             <nav className="fixed top-0 w-full bg-slate-950/80 backdrop-blur-lg border-b border-white/10 z-10">
                 <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex justify-between items-center">
                     {/* TOP LEFT: HOME */}
@@ -38,7 +53,7 @@ const Nav = ({ session }) => {
                         onClick={() => {
                             setActive('Home');
                         }}
-                        className="cursor-pointer text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                        className="cursor-pointer text-2xl font-bold bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                         CareerHub
                     </div>
 

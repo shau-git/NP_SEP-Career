@@ -2,10 +2,10 @@ import React from 'react'
 import { formatSalary, formatEmploymentType, getDaysAgo } from '../../../utils/formatting'
 import {motion} from "framer-motion"
 import { MapPin , Clock,  Building2} from "lucide-react";
-// import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 const JobCards = ({data}) => {
-    // const router = useRouter();
+    const navigate = useNavigate();
     const {job_post_id, title, employment_type, salary_start, salary_end, experience, location, summary, company, created_at, industry} = data
     const fallback = company.image?false:true
     return (
@@ -77,7 +77,13 @@ const JobCards = ({data}) => {
                 <div className="text-sm text-slate-400">
                     Exp: {experience} years
                 </div>
-                <button onClick={() => {}} className="px-4 py-2  bg-[#667eea] rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                <button 
+                    onClick={(e) => {
+                        e.stopPropagation(); // Prevents double-triggering if the card also has an onClick
+                        navigate(`/job_post/${job_post_id}`);
+                    }} 
+                    className="px-4 py-2  bg-[#667eea] rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+                >
                     Visit
                 </button>
             </div>
