@@ -15,7 +15,7 @@ class User extends Model {
     // Instance method to create JWT (equivalent to Mongoose methods)
     createJWT() {
         return jwt.sign(
-          { user_id: this.user_id, email: this.email },
+          { user_id: this.user_id, email: this.email , name: this.name},
           process.env.JWT_SECRET,
           { expiresIn: process.env.JWT_LIFETIME }
         );

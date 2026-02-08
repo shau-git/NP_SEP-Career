@@ -44,11 +44,11 @@ const JobPost = sequelize.define('JobPost', {
     defaultValue: false,
   },
   salary_start: {
-    type: DataTypes.SMALLINT,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   salary_end: {
-    type: DataTypes.SMALLINT,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   location: {

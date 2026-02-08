@@ -1,11 +1,10 @@
-import React from 'react'
 import { formatSalary, formatEmploymentType, getDaysAgo } from '../../../utils/formatting'
 import {motion} from "framer-motion"
 import { MapPin , Clock,  Building2} from "lucide-react";
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import {Badge} from "../../company/utils/company_util_config"
 
 const JobCards = ({data}) => {
-    const navigate = useNavigate();
     const {job_post_id, title, employment_type, salary_start, salary_end, experience, location, summary, company, created_at, industry} = data
     const fallback = company.image?false:true
     return (
@@ -55,37 +54,43 @@ const JobCards = ({data}) => {
                 <span className="text-xs text-slate-500">{getDaysAgo(created_at)}</span>
             </div>
 
-
-
             {/* Job Details */}
             <p className="text-slate-300 mb-5 leading-relaxed text-sm">{summary}</p>
 
+            {/* Badge */}
             <div className="flex flex-wrap gap-2 mb-5">
-                <span className="flex items-center justify-center px-3 py-1 bg-[rgba(102,126,234,0.2)] border border-purple-500/30 rounded-full text-xs text-purple-200 capitalize">
-                    <MapPin className="mr-1 w-3 h-3"/> {location}
-                </span>
-                <span className="flex items-center justify-center px-3 py-1 bg-pink-500/20 border-pink-500/30 rounded-full text-xs text-purple-200 capitalize">
-                    <Clock className="mr-1 w-3 h-3"/> {formatEmploymentType(employment_type)}
-                </span>
-                <span className="px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-xs text-green-200">${formatSalary(salary_start)} - ${formatSalary(salary_end)}</span>
-                <span className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-xs text-cyan-200">
+                {/* Location Badge */}
+                <Badge icon={MapPin} variant="purple">
+                    {location}
+                </Badge>
+
+                {/* Employment Type Badge */}
+                <Badge icon={Clock} variant="pink">
+                    {formatEmploymentType(employment_type)}
+                </Badge>
+
+                {/* Salary Badge */}
+                <Badge variant="green">
+                    ${formatSalary(salary_start)} - ${formatSalary(salary_end)}
+                </Badge>
+
+                {/* Industry Badge */}
+                <Badge variant="cyan">
                     {industry}
-                </span>
+                </Badge>
             </div>
 
             <div className="flex items-center justify-between pt-4 border-t border-white/10">
                 <div className="text-sm text-slate-400">
                     Exp: {experience} years
                 </div>
-                <button 
-                    onClick={(e) => {
-                        e.stopPropagation(); // Prevents double-triggering if the card also has an onClick
-                        navigate(`/job_post/${job_post_id}`);
-                    }} 
+                <Link 
+                    to={`/job_post/${job_post_id}`}
+                    target="_blank"
                     className="px-4 py-2  bg-[#667eea] rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
                 >
                     Visit
-                </button>
+                </Link>
             </div>
         </motion.div>
     )

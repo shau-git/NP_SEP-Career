@@ -27,6 +27,7 @@ const register = async(req, res) => {
     const response = {
         user_id: user.user_id, 
         email: user.email, 
+        name: user.name
     }
 
     res.status(201).json({user: response, token})
@@ -60,6 +61,7 @@ const login = async(req, res) => {
     const response = {
         user_id: user.user_id, 
         email: user.email, 
+        name: user.name
     }
 
     return res.status(200).json({user: response, token})

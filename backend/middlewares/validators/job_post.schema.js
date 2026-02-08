@@ -18,8 +18,6 @@ const jobPostFields = {
 
     requirements: Joi.array()
         .items(Joi.string().trim().min(3).max(200)) // Each item must be a string
-        .min(1) // At least one requirement is needed
-        .required()
         .messages({
             'array.min': 'Please provide at least one requirement',
             'string.empty': 'requirements cannot contain empty text'
@@ -28,20 +26,18 @@ const jobPostFields = {
 
     responsibilities: Joi.array()
         .items(Joi.string().trim().min(3).max(500)) // Longer strings allowed for responsibilities
-        .min(1)
-        .required()
         .messages({
             'array.min': 'Please provide at least one responsibility'
     }),
 
-    employment_type: Joi.string().trim().uppercase()
+    employment_type: Joi.string().trim().lowercase()
             .valid('full time', 'part time')
             .messages({
             'any.only': "employment_type must be one of: 'full time', 'part time' ",
     }),
 
     experience: Joi.string().trim()
-        .valid('0-2', '3-5' ,'5-8', '8+')
+        .valid('0-2', '2-5' ,'5-8', '8+')
         .messages({
         'any.only': "experience must be one of: 0-2, 2-5, 5-8, 8+",
     }),
@@ -71,18 +67,14 @@ const jobPostFields = {
 
     benefit: Joi.array()
         .items(Joi.string().trim().min(3).max(200)) // Each item must be a string
-        .min(1) // At least one requirement is needed
-        .required()
         .messages({
             'array.min': 'Please provide at least one benefit',
             'string.empty': 'Benefit cannot contain empty text'
     }),
 
-    contact_email: Joi.string().email({ tlds: { allow: false } }).min(10).max(65).trim()
+    contact_email: Joi.string().email({ tlds: { allow: false } }).max(65).allow('', null)
         .messages({
-            'string.email': 'Please enter a valid contact_email address',
-            'string.min': 'contact_email must be at least 10 characters long',
-            'string.max': 'contact_email cannot exceed 80 characters',
+            'string.max': 'contact_email cannot exceed 65 characters',
     }),
 
     summary: Joi.string().min(1).max(500).trim().messages({
@@ -138,6 +130,7 @@ const createJobPostSchema = Joi.object({
     benefit: jobPostFields.benefit.required().messages(requiredMsg("benefit")),
     summary: jobPostFields.summary.required().messages(requiredMsg("summary")),
     description: jobPostFields.description.required().messages(requiredMsg("description")),
+    contact_email: jobPostFields.contact_email,
     removed: jobPostFields.removed.forbidden().messages({
         'any.forbidden': 'You are not allowed to handle the removed status here',
     }),

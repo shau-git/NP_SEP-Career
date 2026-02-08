@@ -16,10 +16,9 @@ const auth = async(req, res, next) => {
 
         // verifying the token
         const payload = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(payload)
 
         // attach the jwt token payload to the req
-        req.user = {user_id: payload.user_id, email: payload.email }
+        req.user = {user_id: payload.user_id, email: payload.email, name: payload.name }
 
         // authentication passed, proceed to the next middleware
         next()

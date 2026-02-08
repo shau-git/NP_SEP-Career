@@ -20,7 +20,7 @@ const JobApplicant = sequelize.define('JobApplicant', {
     defaultValue: 'PENDING',
   },
   expected_salary: {
-    type: DataTypes.SMALLINT,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   applied_date: {

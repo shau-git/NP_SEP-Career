@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {MoreMenu, Title, PlusButton, CancelButton, InputTag, SelectTag, AddFieldButton} from "../../components/utils/utils_config"//"@/components/user/utils/utils_config"
+import {MoreMenu, Title, PlusButton, CancelButton, InputTag, SelectTag, AddOnlyButton} from "./utils/utils_config"//"@/components/user/utils/utils_config"
 import { toast } from "react-toastify"
 import {addUserData, deleteUserData} from "../../utils/fetch_data/fetch_config"//"@/util/fetchData/fetch_config"
 import {Save, Trash2} from "lucide-react"
@@ -135,7 +135,7 @@ const Language = ({session, token, languages, setUser, user_id}) => {
         <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
             <div className="flex justify-between items-center mb-6">
 				<Title title="Languages"/>
-				{session.user_id == user_id && <PlusButton handleClick={() => setIsAdding(true)}/>}
+				{(token && session.user_id == user_id) && <PlusButton handleClick={() => setIsAdding(true)}/>}
 			</div>
 
 
@@ -169,7 +169,7 @@ const Language = ({session, token, languages, setUser, user_id}) => {
 					<div className="flex justify-end gap-3 mt-4">
 						<CancelButton {...{resetForm}}/>
 
-						<AddFieldButton handleAdd={handleAddLang} field="Language"/>
+						<AddOnlyButton handleAdd={handleAddLang} field="Language"/>
 					</div>
 				</div>
 			)}

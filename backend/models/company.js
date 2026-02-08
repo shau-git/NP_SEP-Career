@@ -15,6 +15,10 @@ const Company = sequelize.define('Company', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  image_public_id: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
   industry: {
     type: DataTypes.STRING(20),
     allowNull: false,

@@ -1,18 +1,24 @@
 import {useState, useEffect, useId} from 'react'
 import {JobCards} from "../home_config"
 import {getJobPost} from "../../../utils/fetch_data/fetch_config"
+import {toast} from "react-toastify"
 
 const Features = () => {
     const [jobPost, setJobPost] = useState(null)
     const key = useId()
 
-    const fetchJobPost = async () => {
-        const data = await getJobPost()
-        setJobPost(data)
+    const fetchJobPost = async (query) => {
+        const response = await getJobPost(query)
+        const data = await response.json();
+        if(response.status === 200) {
+            setJobPost(data)
+        } else {
+            toast.error(data.message)
+        }
     }
 
     useEffect(() => {
-        fetchJobPost()
+        fetchJobPost("post=active")
     }, [])
 
     return (

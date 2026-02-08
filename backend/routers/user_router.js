@@ -7,6 +7,7 @@ const {addSkill} = require("../controllers/skills_controller")
 const {addLink} = require("../controllers/link_controllers")
 const {addLanguage} = require("../controllers/language_controller")
 const {register} = require("../controllers/auth_controllers")
+const {getJobApplicationsUser} = require("../controllers/job_applicant_controller")
 const checkUser = require("../middlewares/checkuser")
 const auth = require("../middlewares/authentication")
 const {
@@ -38,6 +39,9 @@ router.post('/:user_id/link', auth, createLinkSchema, addLink)
 
 //add language
 router.post('/:user_id/language', auth, createLanguageSchema, addLanguage)
+
+// get job application
+router.get('/:user_id/jobapplicant', auth, getJobApplicationsUser)
 
 // get the user
 router.route('/:user_id')

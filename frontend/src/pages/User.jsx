@@ -20,7 +20,7 @@ const User = () => {
     const fetchUser = async () => {
         const response = await getUser(user_id, token)
         const data = await response.json();
-
+console.log(data)
         if(response.status === 200) {
             setUser(data.data)
         } else if (response.status === 404) {
@@ -165,7 +165,6 @@ const User = () => {
         }
     };
 
-//bg-linear-to-br from-slate-900 via-purple-950 to-slate-900
     return (
         <div className="min-h-screen bg-[#0f0f1e]">
             
@@ -178,7 +177,7 @@ const User = () => {
                     {/* Left Column */}
                     <div className="lg:col-span-2 space-y-6">
                         {/* About Me */}
-                        <Summary {...{session,  user_id, setSummaryDraft, summary, handleEditSummary, handleSaveSummary,handleCancelSummary,  editMode, summaryDraft, Edit2}}/>
+                        <Summary {...{session, token, user_id, setSummaryDraft, summary, handleEditSummary, handleSaveSummary,handleCancelSummary,  editMode, summaryDraft, Edit2}}/>
                         
                         {/* Experience */}
                         <Experience {...{ session, token, user_id, user, experiences, setUser }}/>
@@ -187,7 +186,7 @@ const User = () => {
                         <Education {...{session, token, educations, setUser, user_id }}/>
 
                         {/* Skills */}
-                        <Skill {...{session, user_id, setEditMode, editMode, skills,  handleRemoveSkill, newSkill,  setNewSkill, handleAddSkill}}/>
+                        <Skill {...{session, user_id, setEditMode, editMode, skills,  handleRemoveSkill, newSkill,  setNewSkill, handleAddSkill, token}}/>
                     </div>
                     
 

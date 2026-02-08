@@ -9,6 +9,7 @@ const { updateNotificationSchema } = require("../middlewares/validators/notifica
 const {createUserSchema, updateUserSchema} = require("../middlewares/validators/user.schema")
 const {createLanguageSchema, updateLanguageSchema} = require("../middlewares/validators/language.schema")
 const {createLinkSchema, updateLinkSchema} = require("../middlewares/validators/link.schema")
+const {validateSignIn, validateUpdate} = require("../middlewares/validators/image.schema")
 
 
 module.exports =  {
@@ -42,5 +43,8 @@ module.exports =  {
     updateLanguageSchema,
     
     createLinkSchema,
-    updateLinkSchema
+    updateLinkSchema,
+
+    validateSignIn,
+    validateUpdate 
 }

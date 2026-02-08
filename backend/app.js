@@ -30,6 +30,9 @@ const skill_router = require("./routers/skill_router")
 const link_router = require("./routers/link_router")
 const language_router = require("./routers/language_router")
 const image_router = require("./routers/image_router")
+const company_router = require("./routers/company_router")
+const notification_router = require("./routers/notification_router")
+const jobapplicant_router = require("./routers/jobapplicant_router")
 
 
 // routes
@@ -42,13 +45,16 @@ app.use('/api/skills', skill_router)
 app.use('/api/link', link_router)
 app.use('/api/language', language_router)
 app.use('/api/image', image_router)
+app.use('/api/company', company_router)
+app.use('/api/notification', notification_router)
+app.use('/api/jobapplicant', jobapplicant_router)
 
 // handling error
 app.use(notFound) // all not found route will be catched by this middleware
 app.use(errorHandlerMiddleware)
 
 
-const domain = "http://localhost:"
+const domain = process.env.BACKEND_DOMAIN || "http://localhost"
 // Database connection
 sequelize.authenticate()
     .then(() => {
@@ -56,7 +62,7 @@ sequelize.authenticate()
         // Optional: dbConnect.sync({ alter: true }); // Uncomment only if you need to auto-create/update tables
         app.listen(PORT, () => {
             //console.log(`Server started on port ${PORT}`);
-            console.log(`Server started => ${domain}${PORT}`);
+            console.log(`Server started => ${domain}:${PORT}`);
             
         });
     })

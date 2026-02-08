@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {PlusButton, Title, Duration, InputTag, SelectTag, CancelButton, SaveButton, Description, MoreMenu, InputEndDate} from  "../../components/utils/utils_config"//"@/components/user/utils/utils_config"
+import {PlusButton, Title, Duration, InputTag, SelectTag, CancelButton, SaveButton, Description, MoreMenu, InputEndDate} from  "./utils/utils_config"//"@/components/user/utils/utils_config"
 import { formatDate} from '../../utils/formatting'//'@/util/formating'
 import {updateUser, addUserData, deleteUserData} from "../../utils/fetch_data/fetch_config"//"@/util/fetchData/fetch_config"
 import {Briefcase, Trash2, Edit2, X, Save, MoreVertical} from "lucide-react"
@@ -83,7 +83,6 @@ const Education = ({session, token, educations, setUser, user_id}) => {
     // Add education
     const handleAdd = async () => {
         if (!validateForm()) return;
-        console.log(formData)
 
         try {
             const response = await addUserData(user_id, formData, "education", token);

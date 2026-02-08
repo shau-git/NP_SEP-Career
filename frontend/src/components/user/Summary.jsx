@@ -1,12 +1,12 @@
 import React from 'react'
-import {EditButton, Title} from "../../components/utils/utils_config"//"@/components/user/utils/utils_config"
+import {EditButton, Title} from "./utils/utils_config"
 
-const Summary = ({session,  user_id, handleEditSummary, handleSaveSummary,handleCancelSummary,  editMode, summaryDraft, setSummaryDraft, summary}) => {
+const Summary = ({session, token,  user_id, handleEditSummary, handleSaveSummary,handleCancelSummary,  editMode, summaryDraft, setSummaryDraft, summary}) => {
     return (
         <div className="bg-white/5 backdrop-blur-xl rounded-2xl py-6 px-7 border border-white/10">
             <div className="flex justify-between items-center mb-4">
                 <Title title="About Me"/>
-                {session.user_id == user_id && <EditButton handleEdit={handleEditSummary}/>}
+                {(token && session.user_id == user_id) && <EditButton handleEdit={handleEditSummary}/>}
             </div>
             { editMode.summary ? (
                 <div>

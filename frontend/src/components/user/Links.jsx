@@ -1,4 +1,4 @@
-import {Option, Title, PlusButton, InputTag, CancelButton, SaveButton, MoreMenu, AnchorTag} from "../../components/utils/utils_config"//"@/components/user/utils/utils_config"
+import {Option, Title, PlusButton, InputTag, CancelButton, SaveButton, MoreMenu, AnchorTag} from "./utils/utils_config"//"@/components/user/utils/utils_config"
 import { toast } from "react-toastify"
 import { useState } from 'react';
 import { Link as LinkIcon, Plus, X, Save, Globe, Linkedin, Github, Twitter, Briefcase, Mail as Email } from 'lucide-react';
@@ -25,12 +25,6 @@ const Links = ({session, token, setUser, user_id, Mail, setEditMode, editMode, e
         { value: 'Other', label: 'Other', icon: <LinkIcon className="w-5 h-5" /> },
         { value: 'Email', label: 'Email', icon: <Email className="w-5 h-5" /> }
     ];
-
-    // // Get icon for link type
-    // const getLinkIcon = (type) => {
-    //     const linkType = linkTypes.find(lt => lt.value === type);
-    //     return linkType ? linkType.icon : <LinkIcon className="w-4 h-4" />;
-    // };
 
     // Reset form
     const resetForm = (cancel=false) => {
@@ -87,7 +81,6 @@ const Links = ({session, token, setUser, user_id, Mail, setEditMode, editMode, e
         if (!validateForm()) return;
 
         try {
-            console.log(formData)
             const response = await addUserData(
                 user_id, 
                 {
@@ -190,16 +183,6 @@ const Links = ({session, token, setUser, user_id, Mail, setEditMode, editMode, e
         }
     };
 
-    // // Get display name for URL
-    // const getDisplayUrl = (url) => {
-    //     try {
-    //     const urlObj = new URL(url);
-    //     return urlObj.hostname.replace('www.', '');
-    //     } catch {
-    //     return url;
-    //     }
-    // };
-    
     const handleClickPlus = () => {
         resetForm();
         setIsAdding(true);
@@ -210,13 +193,7 @@ const Links = ({session, token, setUser, user_id, Mail, setEditMode, editMode, e
         <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
             <div className="flex justify-between items-center mb-6">
                 <Title title="Contact & Links"/>
-                {/* <button 
-                    onClick={handleEdit}
-                    className="text-purple-400 hover:text-purple-300 transition-colors"
-                >
-                    <Edit2 className="w-5 h-5" />
-                </button> */}
-                {session.user_id == user_id && <PlusButton handleClick={handleClickPlus}/>}
+                {(token && session.user_id == user_id) && <PlusButton handleClick={handleClickPlus}/>}
             </div>
 
             {/* Editing/adding form */}
@@ -234,7 +211,7 @@ const Links = ({session, token, setUser, user_id, Mail, setEditMode, editMode, e
                                     key={type.value}
                                     type="button"
                                     onClick={() => setFormData({ ...formData, type: type.value })}
-                                    className={`flex items-center justify-center gap-2 p-3 rounded-lg border transition-all ${
+                                    className={`cursor-pointer flex items-center justify-center gap-2 p-3 rounded-lg border transition-all ${
                                     formData.type === type.value
                                         ? 'bg-blue-500/30 border-blue-500/50 text-blue-200'
                                         : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
@@ -248,22 +225,6 @@ const Links = ({session, token, setUser, user_id, Mail, setEditMode, editMode, e
                         </div>
 
                         {/* URL */}
-                        {/* <div>
-                            <label className="block text-white/80 font-medium mb-2 text-sm">
-                                URL *
-                            </label>
-                            <input
-                                type="url"
-                                name="url"
-                                value={formData.url}
-                                onChange={handleChange}
-                                placeholder="https://example.com"
-                                className={`w-full bg-white/5 border ${
-                                errors.url ? 'border-red-500/50' : 'border-white/20'
-                                } rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500`}
-                            />
-                            {errors.url && <p className="text-red-400 text-xs mt-1">{errors.url}</p>}
-                        </div> */}
                         <InputTag 
                             label="URL *"
                             type="url"
@@ -278,22 +239,8 @@ const Links = ({session, token, setUser, user_id, Mail, setEditMode, editMode, e
 
                     {/* Form Actions */}
                     <div className="flex justify-end gap-3 mt-4">
-                        {/* <button
-                            onClick={resetForm}
-                            className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white/70 hover:bg-white/10 transition-all flex items-center gap-2"
-                        >
-                            <X className="w-4 h-4" />
-                            Cancel
-                        </button> */}
                         <CancelButton resetForm={() => resetForm(true)}/>
 
-                        {/* <button
-                            onClick={() => editingId ? handleUpdate(editingId) : handleAdd()}
-                            className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg text-white font-medium hover:shadow-lg hover:shadow-blue-500/50 transition-all flex items-center gap-2"
-                        >
-                            <Save className="w-4 h-4" />
-                            {editingId ? 'Update' : 'Add'} Link
-                        </button> */}
                         <SaveButton 
                             field="Link" 
                             handleSave={() => editingId ? handleUpdate(editingId) : handleAdd()}
@@ -306,37 +253,10 @@ const Links = ({session, token, setUser, user_id, Mail, setEditMode, editMode, e
             {/* Link list */}
             <div className="space-y-3">
                 {/* Email Link */}
-                <AnchorTag  linkTypes={linkTypes} url={email} linkType={"Email"} status={{session, user_id}}/>
+                <AnchorTag token={token} linkTypes={linkTypes} url={email} linkType={"Email"} status={{session, user_id}}/>
 
                 {
                     links.map((link) => (
-                    // <div
-                    //     key={link.link_id}
-                    //     className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all group"
-                    // >
-                        
-                    //     <div className="w-9 h-9 rounded-full bg-linear-to-br from-blue-500 to-cyan-500 flex items-center justify-center shrink-0 text-white">
-                    //         {getLinkIcon(link.type)}
-                    //     </div>
-                   
-                    //     <div className="flex-1 min-w-0">
-                    //         <div className="text-white/50 text-xs">{link.type}</div>
-                    //         <a
-                    //             href={link.url}
-                    //             target="_blank"
-                    //             rel="noopener noreferrer"
-                    //             className="text-blue-300 hover:text-blue-200 transition-colors truncate block font-medium"
-                    //         >
-                    //         {getDisplayUrl(link.url)}
-                    //         </a>
-                    //     </div>
-
-                    
-                    //     <MoreMenu
-                    //         onEdit={() => handleEdit(link)}
-                    //         onDelete={() => handleDelete(link.link_id)}
-                    //     />
-                    // </div>
                     <AnchorTag 
                         key={link.link_id} 
                         onEdit={() => handleEdit(link)} 

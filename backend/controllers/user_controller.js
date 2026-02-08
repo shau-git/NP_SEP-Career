@@ -7,6 +7,7 @@ const Education = require("../models/education")
 const Language = require("../models/language")
 const Experience = require("../models/experience")
 const Link = require("../models/link")
+const Company = require("../models/company")
 
 const CompanyMember = require("../models/company_member")
 const JobApplicant = require("../models/jobapplicant")
@@ -16,7 +17,6 @@ const JobApplicant = require("../models/jobapplicant")
 const getUserProfile = asyncWrapper(async (req, res) => {
     const { user_id } = req.params;
 
-    
     // 1. Validate ID is a number
     if (isNaN(Number(user_id))) {
         throw new BadRequestError("Invalid User ID format");
@@ -38,8 +38,19 @@ const getUserProfile = asyncWrapper(async (req, res) => {
     // Note: req.user should be populated by your auth middleware
     if (payload?.user_id && (parseInt(user_id) == payload?.user_id)) {
         includeOptions.push(
-            { model: CompanyMember, as: 'company_members', attributes: ['company_member_id', 'company_id', 'role'] },
-            { model: JobApplicant, as: 'job_applicants', attributes: ['applicant_id', 'job_post_id', 'status'] }
+            { model: JobApplicant, as: 'job_applicants', attributes: ['applicant_id', 'job_post_id', 'status', 'expected_salary', 'applied_date'] },
+            { 
+                model: CompanyMember, 
+                as: 'company_members', 
+                attributes: ['company_member_id', 'company_id', 'role', 'removed'],
+                include: [
+                    {
+                        model: Company,
+                        as: 'company', // Make sure this alias matches your CompanyMember -> Company association
+                        attributes: ['company_id', 'name', 'image', 'industry', 'location'] // Only get the fields you need
+                    }
+                ] 
+            }
         );
     }
 
@@ -97,8 +108,6 @@ const updateUserProfile = asyncWrapper(async (req, res) => {
         where: { user_id: parseInt(user_id) },
         attributes: ['user_id', 'role', 'name', 'email', 'image', 'summary']
     });
-
-    console.log(updatedUser)
 
     return res.status(200).json({message: "User data updated successfully!" , data: updatedUser});
 });

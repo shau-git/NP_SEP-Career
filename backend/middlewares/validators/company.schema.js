@@ -45,6 +45,7 @@ const forbiddenFields = {
     job_posts: Joi.forbidden().messages({
         'any.forbidden': 'You are not allowed to modify job_posts relation',
   }),
+  image_public_id: Joi.forbidden().messages({'any.unknown': "You cannot modify the image_public_id"}),
 };
 
 // POST schema (required + forbidden)

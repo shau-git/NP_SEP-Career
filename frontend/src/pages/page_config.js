@@ -3,11 +3,13 @@ import Home from "./Home"
 import User from "./User"
 import Notification from "./Notification"
 import JobPost from "./JobPost"
+import UserCompany from "./UserCompany"
 
 export {
     Home, 
     User,
     Company,
     Notification,
-    JobPost
+    JobPost,
+    UserCompany
 }

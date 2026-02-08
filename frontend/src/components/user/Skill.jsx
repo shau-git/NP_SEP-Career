@@ -1,9 +1,9 @@
 import React from 'react'
-import {EditButton, Title} from "../../components/utils/utils_config"//"@/components/user/utils/utils_config"
+import {EditButton, Title} from "./utils/utils_config"//"@/components/user/utils/utils_config"
 import { X } from 'lucide-react';
 import {motion} from "framer-motion"
 
-const Skill = ({session, user_id, setEditMode, editMode, skills, handleRemoveSkill, newSkill, setNewSkill, handleAddSkill}) => {
+const Skill = ({session, token, user_id, setEditMode, editMode, skills, handleRemoveSkill, newSkill, setNewSkill, handleAddSkill}) => {
     const handleEdit = () => {
         setEditMode({ ...editMode, skills: !editMode.skills })
     }
@@ -12,7 +12,7 @@ const Skill = ({session, user_id, setEditMode, editMode, skills, handleRemoveSki
             <div className="flex justify-between items-center mb-6">
                 <Title title="Skills & Technologies"/>
             
-                {session.user_id == user_id && <EditButton {...{handleEdit}}/>}
+                {(token && session.user_id == user_id) && <EditButton {...{handleEdit}}/>}
             </div>
             <div className="flex flex-wrap gap-3 mb-4">
                 {skills.map((skill) => (
@@ -48,12 +48,15 @@ const Skill = ({session, user_id, setEditMode, editMode, skills, handleRemoveSki
                         className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500"
                         maxLength={30}
                     />
-                    <button
+                    <motion.button
+                        whileHover={{
+                            boxShadow: "0 0 25px rgba(168,85,247,0.5)",
+                        }}
                         onClick={handleAddSkill}
-                        className="px-4 py-2 bg-linear-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+                        className="cursor-pointer px-4 py-2 bg-linear-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all"
                     >
                         Add
-                    </button>
+                    </motion.button>
                 </div>
             )}
         </div>

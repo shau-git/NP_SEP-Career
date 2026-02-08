@@ -1,7 +1,7 @@
 import {useState} from 'react'
-import {PlusButton, Title, Duration, MoreMenu , InputTag, SelectTag, CancelButton, SaveButton, Description, InputEndDate} from "../../components/utils/utils_config"//"@/components/user/utils/utils_config"
-import { formatDate} from '../../utils/formatting'//'@/util/formating'
-import {updateUser, addUserData, deleteUserData} from "../../utils/fetch_data/fetch_config"//"@/util/fetchData/fetch_config"
+import {PlusButton, Title, Duration, MoreMenu , InputTag, SelectTag, CancelButton, SaveButton, Description, InputEndDate} from "./utils/utils_config"
+import { formatDate} from '../../utils/formatting'
+import {updateUser, addUserData, deleteUserData} from "../../utils/fetch_data/fetch_config"
 import { toast } from "react-toastify"
 
 const Experience = ({ session, token, experiences, setUser, user_id}) => {
@@ -192,7 +192,7 @@ const Experience = ({ session, token, experiences, setUser, user_id}) => {
             <div className="flex justify-between items-center mb-6">
                 <Title title="Experience"/>
 
-                {(session.user_id == user_id) && <PlusButton handleClick={handleClickPlus}/>}
+                {(token && session?.user_id == user_id) && <PlusButton handleClick={handleClickPlus}/>}
             </div>
 
             {/* Add/Edit Form */}
@@ -315,7 +315,7 @@ const Experience = ({ session, token, experiences, setUser, user_id}) => {
 
                                     {/* button to toogle edit & delete */}
                                     {
-                                        (session.user_id == user_id) &&  
+                                        (token && session.user_id == user_id) &&  
                                             <MoreMenu
                                                 onEdit={() => handleEdit(exp)}
                                                 onDelete={() => handleDelete(exp.experience_id)}

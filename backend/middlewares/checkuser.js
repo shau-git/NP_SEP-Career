@@ -13,8 +13,6 @@ const checkUser = async(req, res, next) => {
             // verifying the token
             const payload = jwt.verify(token, process.env.JWT_SECRET)
 
-            console.log(payload)
-
             // attach the jwt token payload to the req
             req.user = {user_id: payload.user_id, email: payload.email }
         }
@@ -22,7 +20,6 @@ const checkUser = async(req, res, next) => {
         console.error(error)
     }
     
-    console.log("nextnetx")
     next()
 } 
 

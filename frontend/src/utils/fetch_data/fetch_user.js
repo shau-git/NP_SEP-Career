@@ -15,7 +15,7 @@ const getUser = async (user_id, token) => {
 // update summary, name, role, image only
 const updateUser = async (field, field_id,  reqBody, token) => {
     const response = await fetch(`${backend_domain}/api/${field}/${field_id}`, {
-        method: 'PUT', //
+        method: 'PUT', 
         headers: {
             'Content-Type': 'application/json', 
             'Authorization': `Bearer ${token}`
@@ -31,7 +31,7 @@ const updateUser = async (field, field_id,  reqBody, token) => {
 const addUserData = async (user_id, reqBody, field, token) => {
 
     const response = await fetch(`${backend_domain}/api/user/${user_id}/${field}`, {
-        method: 'POST', //
+        method: 'POST', 
         headers: {
             'Content-Type': 'application/json', 
             'Authorization': `Bearer ${token}`
