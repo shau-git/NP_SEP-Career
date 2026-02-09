@@ -1,5 +1,5 @@
 import {motion} from "framer-motion"
-const SaveButton = ({handleSave}) => {
+const SaveButton = ({handleSave, title}) => {
     return (
         <motion.button 
             whileHover={{
@@ -8,7 +8,7 @@ const SaveButton = ({handleSave}) => {
             onClick={handleSave}
             className="cursor-pointer px-4 py-2 bg-linear-to-r from-purple-500 to-pink-500 text-white rounded-lg text-[14px]"
         >
-            Save
+            {title}
         </motion.button>
     )
 }

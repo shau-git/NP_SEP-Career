@@ -37,11 +37,11 @@ export default function CompanyDetailPage() {
   	const [statsLoading, setStatsLoading] = useState(false);
 	const [openModal, setOpenModal] = useState(false)
 	const [openInterviewModal, setOpenInterviewModal] = useState(null) //will store the applicant_id that to be schedule for interview
-	const [errors, setErrors] = useState({});
-	const [interviewDraft, setInterviewDraft] = useState({
-		interview_date: '',
-		// interview_time: ''
-	});
+	// const [errors, setErrors] = useState({});
+	// const [interviewDraft, setInterviewDraft] = useState({
+	// 	interview_date: '',
+	// 	// interview_time: ''
+	// });
 	const navigate = useNavigate()
 
 	let {company_id} = useParams();
@@ -114,13 +114,6 @@ export default function CompanyDetailPage() {
 		getStats()
 	},[isMember])
 
-	// Handle interview input change
-    const handleChange = (field, value) => {
-        setInterviewDraft(prev => ({ ...prev, [field]: value }));
-        if (errors[field]) {
-        setInterviewDraft(prev => ({ ...prev, [field]: null }));
-        }
-    };
 
 	// function to fetch compant data
 	const fetchCompanyData = async () => {
@@ -176,22 +169,6 @@ export default function CompanyDetailPage() {
 		}
 	};
 
-	// update applicant status
-	const handleStatusChange = async (applicantId, reqBody) => {
-		if (!confirm(`Are you sure you want to change the status to ${reqBody.status}?`)) return;
-		const response = await updateApplicant(applicantId, reqBody, token)
-		const data = await response.json();
-		if(response.status === 200) {
-			const {interview_date, status} = data.data
-			setApplicants(applicants.map(app => 
-				app.applicant_id === applicantId ? { ...app, interview_date, status } : app
-			));
-			if(openInterviewModal) setOpenInterviewModal(null)
-			toast.success(data.message)
-		} else {
-			toast.error(data.message)
-		}
-	};
 
 	const filteredApplicants = applicants.filter(app => {
 		if (filterStatus !== 'all' && app.status !== filterStatus) return false;
@@ -199,23 +176,6 @@ export default function CompanyDetailPage() {
 		return true;
 	});
 
-	// Validate form
-    const validateForm = () => {
-        const newErrors = {}
-        
-        if (!interviewDraft.interview_date) newErrors.interview_date = 'Interview date is required';
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-	// when user submit an interview date
-	const handleSubmiInterview = (openInterviewModal) => {
-		const reqBody = {status: "INTERVIEW", interview_date: interviewDraft.interview_date}
-		if (!validateForm()) return		
-		handleStatusChange(openInterviewModal, reqBody)
-		setErrors({})
-	}
 
 	if (companyLoading) {
 		return (
@@ -225,33 +185,6 @@ export default function CompanyDetailPage() {
 
   	return (
     	<div className="min-h-screen bg-slate-950 text-white pt-10">
-			{ openInterviewModal && 
-				<div className="fixed inset-0 bg-black/70  flex items-center justify-center p-4 z-50">
-					<div className="bg-gray-900 border-gray-100 rounded-lg p-6 w-full max-w-sm">
-						<h2 className="text-lg font-bold mb-4">Schedule Interview</h2>
-						<InputTag 
-							title="Date" 
-							type="date"
-							value={interviewDraft.interview_date} 
-							handleChange={(e) => handleChange('interview_date', e.target.value)}
-							errors={errors.interview_date} 
-						/>
-
-						<div className="flex justify-end gap-2 pt-2">
-							<button  onClick={() => { setOpenInterviewModal(false); setErrors({})}} className="cursor-pointer px-4 py-2 text-gray-300 bg-gray-600/60 rounded">
-								Cancel
-							</button>
-							<button  
-								onClick={() => handleSubmiInterview(openInterviewModal)}
-								className="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer"
-							>
-								Confirm
-							</button>
-						</div>
-
-					</div>
-				</div>
-			}
 			{/* Header */}
 			<div className="bg-slate-900/50 backdrop-blur-lg border-b border-white/10 px-5 py-9">
 				<div className="max-w-7xl mx-auto px-6 py-4">
@@ -284,12 +217,12 @@ export default function CompanyDetailPage() {
 				)}
 
 				{/* Applicants Tab */}
-				{activeTab === 'applicants' && (
-					<JobApplicant {...{token, setOpenInterviewModal, filterJob, setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants, handleStatusChange, isMember}}/>
+				{isMember && activeTab === 'applicants' && (
+					<JobApplicant {...{openInterviewModal, applicants,setApplicants,  token, setOpenInterviewModal, filterJob, setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants}}/>
 				)}
 
 				{/* Members Tab */}
-				{activeTab === 'members' && (
+				{isMember && activeTab === 'members' && (
 					<Member {...{token, company_id, members, company, session, setMembers}}/>
 				)}
 			</div>

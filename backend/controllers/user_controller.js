@@ -12,7 +12,6 @@ const Company = require("../models/company")
 const CompanyMember = require("../models/company_member")
 const JobApplicant = require("../models/jobapplicant")
 
-
 // get the user profile
 const getUserProfile = asyncWrapper(async (req, res) => {
     const { user_id } = req.params;

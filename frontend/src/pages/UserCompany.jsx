@@ -261,7 +261,7 @@ const UserCompany = () => {
                             No companies found matching "{searchQuery}"
                         </div>
                         )}
-                    </div>
+                    </div> 
                     )}
                 </div>
             </div>

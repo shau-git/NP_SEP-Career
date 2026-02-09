@@ -1,8 +1,18 @@
 import {DollarSign, Calendar, Clock, Eye} from 'lucide-react'
 import {ApplicantMoreMenu} from "./utils/company_util_config"
 import { Link } from 'react-router-dom';
+import {updateApplicant} from "../../utils/fetch_data/fetch_config"
+import {toast} from "react-toastify"
+import {useState} from "react"
 
-const JobApplicant = ({token, setOpenInterviewModal, filterJob, setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants, handleStatusChange, isMember}) => {
+// token, setOpenInterviewModal, filterJob, setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants, handleStatusChange, isMember
+// token, filterJob setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants,
+const JobApplicant = ({openInterviewModal, applicants,setApplicants,  token, setOpenInterviewModal, filterJob, setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants}) => {
+    const [errors, setErrors] = useState({});
+    const [interviewDraft, setInterviewDraft] = useState({
+		interview_date: '',
+		// interview_time: ''
+	});
 
     const getStatusBadge = (status) => {
 		const styles = {
@@ -15,9 +25,80 @@ const JobApplicant = ({token, setOpenInterviewModal, filterJob, setFilterJob, jo
 		return styles[status] || styles.PENDING;
 	};
 
+    // Validate form
+    const validateForm = () => {
+        const newErrors = {}
+        
+        if (!interviewDraft.interview_date) newErrors.interview_date = 'Interview date is required';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    // when user submit an interview date
+	const handleSubmiInterview = (openInterviewModal) => {
+		const reqBody = {status: "INTERVIEW", interview_date: interviewDraft.interview_date}
+		if (!validateForm()) return		
+		handleStatusChange(openInterviewModal, reqBody)
+		setErrors({})
+	}
+
+    // Handle interview input change
+    const handleChange = (field, value) => {
+        setInterviewDraft(prev => ({ ...prev, [field]: value }));
+        if (errors[field]) {
+        setInterviewDraft(prev => ({ ...prev, [field]: null }));
+        }
+    };
+
+    // update applicant status
+	const handleStatusChange = async (applicantId, reqBody) => {
+		if (!confirm(`Are you sure you want to change the status to ${reqBody.status}?`)) return;
+		const response = await updateApplicant(applicantId, reqBody, token)
+		const data = await response.json();
+		if(response.status === 200) {
+			const {interview_date, status} = data.data
+			setApplicants(applicants.map(app => 
+				app.applicant_id === applicantId ? { ...app, interview_date, status } : app
+			));
+			if(openInterviewModal) setOpenInterviewModal(null)
+			toast.success(data.message)
+		} else {
+			toast.error(data.message)
+		}
+	};
+
+    
+
     return (
         <div>
-            
+            { openInterviewModal && 
+				<div className="fixed inset-0 bg-black/70  flex items-center justify-center p-4 z-50">
+					<div className="bg-gray-900 border-gray-100 rounded-lg p-6 w-full max-w-sm">
+						<h2 className="text-lg font-bold mb-4">Schedule Interview</h2>
+						<InputTag 
+							title="Date" 
+							type="date"
+							value={interviewDraft.interview_date} 
+							handleChange={(e) => handleChange('interview_date', e.target.value)}
+							errors={errors.interview_date} 
+						/>
+
+						<div className="flex justify-end gap-2 pt-2">
+							<button  onClick={() => { setOpenInterviewModal(false); setErrors({})}} className="cursor-pointer px-4 py-2 text-gray-300 bg-gray-600/60 rounded">
+								Cancel
+							</button>
+							<button  
+								onClick={() => handleSubmiInterview(openInterviewModal)}
+								className="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer"
+							>
+								Confirm
+							</button>
+						</div>
+
+					</div>
+				</div>
+			}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 lg:mb-6">
                 <h2 className="text-xl lg:text-2xl font-bold">Applicants</h2>
                 <div className="w-full sm:w-auto flex gap-2">

@@ -45,7 +45,8 @@ const getCompanyMembers = asyncWrapper(async (req, res) => {
                 as: 'user', // Must match your association alias
                 attributes: ['name', 'email', 'image']
             }
-        ]
+        ],
+        order: [["company_member_id", "DESC"]],
     });
     
     if (data.length > 0) {
@@ -60,41 +61,32 @@ const getCompanyMembers = asyncWrapper(async (req, res) => {
 // --- POST: Add New Member ---
 const addCompanyMember = asyncWrapper(async (req, res) => {
     const { company_id } = req.params;
-    const admin_id = req.user.user_id; // The logged-in admin
+    const admin_id = req.user.user_id;
     const value = req.body;
 
-    // Start a transaction for the creation and notifications
     const t = await sequelize.transaction();
 
     try {
-
         // 1. Verify User and Company exist
         const [userExist, company] = await Promise.all([
-            User.findByPk(value.user_id),
+            User.findByPk(value.user_id, {
+                // Explicitly select the attributes you want to return later
+                attributes: ['user_id', 'name', 'image', 'email'] 
+            }),
             Company.findByPk(company_id)
         ]);
 
         if (!userExist) throw new NotFoundError(`User ID ${value.user_id} does not exist.`);
         if (!company) throw new NotFoundError(`Company ID ${company_id} not found.`);
 
-
-        // 2. Authorization: Only admin/owner can add members
+        // 2. Authorization (existing logic)
         const admin = await CompanyMember.findOne({
-            where: {
-                company_id,
-                user_id: admin_id,
-                role: ['admin', 'owner'],
-                removed: false
-            }
+            where: { company_id, user_id: admin_id, role: ['admin', 'owner'], removed: false }
         });
+        if (!admin) throw new ForbiddenError('Unauthorized to add members');
 
-        if (!admin) throw new ForbiddenError('Unauthorized to add members to this company');
-
-        // 3. Business Logic: Cannot manually add an 'owner'
-        if (value.role === "owner") {
-            throw new ForbiddenError("Cannot add new member as the company owner!");
-        }
-
+        // 3. Business Logic (existing logic)
+        if (value.role === "owner") throw new ForbiddenError("Cannot add owner");
         
         // 4. Create Member Record
         const newMember = await CompanyMember.create(
@@ -102,45 +94,27 @@ const addCompanyMember = asyncWrapper(async (req, res) => {
             { transaction: t }
         );
 
-        // 5. Notification Logic
-        const teamToNotify = await CompanyMember.findAll({
-            where: {
-                company_id,
-                removed: false,
-                user_id: { [Op.notIn]: [admin_id, value.user_id] }
-            },
-            attributes: ['user_id']
-        });
-
-        const notificationsList = [
-            // A. Notify New Member
-            {
-                user_id: value.user_id,
-                sender_id: admin_id,
-                company_id,
-                type: "COMPANY_MEMBER_ADD",
-                message: `Welcome! You've been added to ${company.name} as a ${value.role}.`
-            },
-            // B. Notify rest of the team
-            ...teamToNotify.map(m => ({
-                user_id: m.user_id,
-                sender_id: value.user_id,
-                company_id,
-                type: "TEAM_UPDATE",
-                message: `${userExist.name} has joined the ${company.name} team as a ${value.role}.`
-            }))
-        ];
-
-        if (notificationsList.length > 0) {
-            await Notification.bulkCreate(notificationsList, { transaction: t });
-        }
+        // ... (Keep your Notification Logic here) ...
 
         await t.commit();
-        return res.status(201).json({ message: "New Member Added!", data: newMember });
+
+        // 5. Modified Response: Combine membership data with user details
+        return res.status(201).json({ 
+            message: "New Member Added!", 
+            data: {
+                ...newMember.toJSON(), // Membership details (role, company_id, etc.)
+                user: {                // Injected User details
+                    user_id: userExist.user_id,
+                    name: userExist.name,
+                    email: userExist.email,
+                    image: userExist.image
+                }
+            } 
+        });
 
     } catch (error) {
         await t.rollback();
-        throw error; // Let asyncWrapper handle the response
+        throw error;
     }
 });
 

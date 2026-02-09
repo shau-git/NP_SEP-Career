@@ -62,10 +62,13 @@ const Profile = ({ session, token, user, user_id, setUser, Camera, MapPin, Brief
         <div className="pt-20">
             <div className="max-w-7xl mx-auto px-5 py-9">
                 <div className="bg-linear-to-r from-[rgba(102,126,234,0.2)]  to-[rgba(118,75,162,0.2)]  backdrop-blur-xl rounded-3xl p-8 border border-white/10">
-                    {(token && session.user_id == user_id) && <div className="flex justify-end items-center">
-                        <EditButton handleEdit={handleEdit}/>
-                    </div>}
-                    <div className="flex flex-col gap-7 items-center ">
+                    <div className="flex justify-between items-center">
+                    <div className="text-white">User ID: {user_id}</div>
+                        {(token && session.user_id == user_id) && 
+                            <EditButton handleEdit={handleEdit}/>
+                        }
+                    </div>
+                    <div className="flex flex-col gap-7 items-center mt-4">
                         {/* Profile Image */}
                         <ProfileImage show={(token && session.user_id == user_id)? true : false} data={user} tableName="user" {...{changeImage, token}}/>
 

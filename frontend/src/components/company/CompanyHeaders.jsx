@@ -102,7 +102,7 @@ const CompanyHeaders = ({session, token, company_id, company, setCompany, isMemb
             {editMode && <div className="flex justify-end">
                 <div className="flex justify-end gap-2 mb-6">
                     <CancelButton {...{handleCancel}}/>
-                    <SaveButton {...{handleSave}}/>
+                    <SaveButton {...{handleSave}} title="Save"/>
                 </div> 
             </div>}
 

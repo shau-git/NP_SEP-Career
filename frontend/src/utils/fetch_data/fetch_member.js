@@ -35,7 +35,7 @@ const updateCompanyMember = async (company_id,  reqBody, token, company_member_i
 
 
 // create company
-const createCompanyMember = async ( reqBody, token) => {
+const createCompanyMember = async ( company_id, reqBody, token) => {
 
     const endpoint = `${backend_domain}/api/company/${company_id}/companymember`
 
