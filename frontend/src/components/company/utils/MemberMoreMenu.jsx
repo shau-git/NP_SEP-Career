@@ -41,7 +41,7 @@ const MemberMoreMenu = ({member, handleEdit}) => {
 			{/* Dropdown Menu */}
 			{isOpen && (
                 <div 
-					className={`absolute top-10 right-0 bg-slate-800/95 backdrop-blur-lg border border-white/20 rounded-xl shadow-2xl overflow-hidden z-10`}
+					className={`z-50 absolute top-10 right-0 bg-slate-800/95 backdrop-blur-lg border border-white/20 rounded-xl shadow-2xl overflow-hidden`}
 					onClick={(e) => e.stopPropagation()}
 				>
 					 <EditButton2 handleEdit={() => handleEdit(member)}/>

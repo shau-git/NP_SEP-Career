@@ -280,36 +280,53 @@ const Member = ({company_id, members, company, session, setMembers, token}) => {
             <div className="grid gap-3 lg:gap-4">
                 {members.map(member => (
                     <div key={member.company_member_id} className="bg-white/5 backdrop-blur-xl rounded-xl lg:rounded-2xl p-4 lg:p-6 border border-white/10">
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                            <div className="flex items-center gap-3 lg:gap-4 flex-1 min-w-0">
-                                <img src={member.user.image} alt={member.user.name} className="w-12 h-12 lg:w-14 lg:h-14 rounded-full shrink-0" />
-                                <div className="flex-1 min-w-0">
+                        {/* Main Container: items-start keeps menu aligned with the top (name) */}
+                        <div className="flex items-start justify-between gap-3">
+                            
+                            {/* Left Section: Image + Info (Name, Email, Badges) */}
+                            <div className="flex items-start gap-3 lg:gap-4 flex-1 min-w-0">
+                                {member.user.image ? (
+                                    <img src={member.user.image} alt={member.user.name} className="w-12 h-12 lg:w-14 lg:h-14 rounded-full shrink-0" />
+                                ) : (
+                                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white/10 rounded-full border-white/20 border flex items-center justify-center shrink-0">
+                                        <UserRound className="w-6 h-6"/>
+                                    </div>
+                                )}
+                                
+                                {/* Content Column: Name, Email, and then Badges */}
+                                <div className="flex-1 min-w-0 flex flex-col">
                                     <Link 
                                         to={`/user/${member.user_id}`}
                                         target="_blank"
-                                        className="text-base lg:text-lg font-semibold truncate"
+                                        className="text-base lg:text-lg font-semibold truncate hover:text-purple-400 transition-colors"
                                     >
-                                        {member.user.name}
+                                        {member.user.name} {session.user_id === member.user_id && <span className="text-sm text-purple-400">(You)</span>}
                                     </Link>
-                                    <p className="text-white/60 text-xs lg:text-sm truncate">{member.user.email}</p>
+                                    <p className="text-white/60 text-xs lg:text-sm truncate mb-2">{member.user.email}</p>
+                                    
+                                    {/* Badges: Now positioned below the email */}
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <span className={`px-2 lg:px-3 py-1 border rounded-full text-[10px] lg:text-xs capitalize ${getRoleBadge(member.role)}`}>
+                                            {member.role}
+                                        </span>
+                                        {member.removed === true && (
+                                            <span className="px-2 lg:px-3 py-1 border rounded-full text-[10px] lg:text-xs capitalize bg-red-500/20 border-red-500/30 text-red-200">
+                                                Removed
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
-                                {
-                                    member.removed === true && 
-                                    <span className={`px-2 lg:px-3 py-1 border rounded-full text-xs capitalize shrink-0 bg-red-500/20 border-red-500/30 text-red-200`}>
-                                        Removed
-                                    </span>
-                                }
-                                <span className={`px-2 lg:px-3 py-1 border rounded-full text-xs capitalize shrink-0 ${getRoleBadge(member.role)}`}>
-                                    {member.role}
-                                </span>
                             </div>
-                            <div className="flex gap-2 w-full sm:w-auto">
-    
+
+                            {/* Right Section: The Menu (Pinned to top-right) */}
                             {/* 1. ADMIN & OWNER ACTIONS: Change Role / Remove Member */}
                             {/* prevent  UI from showing "management" buttons  to a person looking at their own row.*/}
-                            {token && ((company.role === 'owner' ) || 
-                                (company.role === 'admin' && member.role !== 'owner' && member.user_id !== session.user_id)) && (
-                                    <MemberMoreMenu {...{ member, handleEdit}}/>
+                            <div className="flex shrink-0">
+                                {token && (
+                                    (company.role === 'owner') || 
+                                    (company.role === 'admin' && member.role !== 'owner' && member.user_id !== session.user_id)
+                                ) && (
+                                    <MemberMoreMenu {...{ member, handleEdit }} />
                                 )}
                             </div>
                         </div>
