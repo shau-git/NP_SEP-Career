@@ -15,6 +15,7 @@ const Nav = () => {
 
     const navigate = useNavigate(); // Standard React Router hook
 
+    // toogle to the active tab
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('user'));
         if (active) {
@@ -54,15 +55,16 @@ const Nav = () => {
     const handleClick = (stateToActive) => { 
         setActive(stateToActive);
         const currentUser = JSON.parse(localStorage.getItem('user'));
-        if (!localStorage.getItem('token') || !currentUser) {
+        const token = localStorage.getItem('token') 
+        if (!token || !currentUser) {
             setOpenLoginModal(true);
         } else {
-            
+            setHasToken(true)
+            setHasSession(currentUser)
             if(stateToActive !== "user") {
                 navigate(`/${stateToActive}/${currentUser.user_id}`);
             } else {
                 // open the profile dropdown if is not opened
-                console.log("ijjk")
                 !openProfileDropdown && setOpenProfileDropdown(true)
             }
         }
@@ -79,7 +81,6 @@ const Nav = () => {
             document.body.style.overflow = 'unset';
         };
     }, [openLoginModal]);
-
 
     return (
         <>
@@ -100,7 +101,7 @@ const Nav = () => {
                         <Tooltip name="Company">
                             <button 
                                 onClick={() => handleClick("usercompany")}
-                                className={`cursor-pointer group w-10 h-10 rounded-full ${hasToken && hasSession && active === "company"? "border-purple-500 border-2":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
+                                className={`cursor-pointer group w-10 h-10 rounded-full ${hasToken && hasSession && active === "usercompany"? "border-purple-500 border-2":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
                             >
                                 <Building2 className="w-4.5 h-4.5" />
                             </button>

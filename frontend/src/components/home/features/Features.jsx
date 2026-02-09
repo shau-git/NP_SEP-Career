@@ -29,8 +29,9 @@ const Features = () => {
                         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-linear-to-r from-[rgb(102,126,234)] to-[rgb(118,75,162)] bg-clip-text text-transparent">
                             Featured Opportunities
                         </h2>
-                        <div className="mb-2 font-semibold">Total: {jobPost.total}</div>
-                        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="mb-2 font-semibold max-w-7xl mx-auto">Total: {jobPost.total}</div>
+                        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                            
                             {
                                 jobPost.data.map((data, i) => (
                                     <JobCards {...{data}} key={`${key}-${i}`}/>

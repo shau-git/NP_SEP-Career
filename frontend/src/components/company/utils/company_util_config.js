@@ -11,6 +11,8 @@ import RestoreButton from "./RestoreButton";
 import MoreMenu from "./MoreMenu";
 import PlusButton from "./PlusButton";
 import ActionsButton from "./ActionsButton";
+import ApplicantMoreMenu from "./ApplicantMoreMenu";
+import MemberMoreMenu from "./MemberMoreMenu";
 
 export {
     SaveButton,
@@ -25,5 +27,7 @@ export {
     RestoreButton,
     MoreMenu,
     PlusButton,
-    ActionsButton
+    ActionsButton,
+    ApplicantMoreMenu,
+    MemberMoreMenu
 }

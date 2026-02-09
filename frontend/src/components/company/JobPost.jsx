@@ -6,7 +6,6 @@ import {
 import {Badge, InputTag, SelectTag, TextAreaTag, ListTag, TextList, PlusButton} from "./utils/company_util_config"
 import { Link } from 'react-router-dom';
 import {MoreMenu} from "./utils/company_util_config"
-import {motion} from "framer-motion"
 import {updateJobPost, createJobPost} from "../../utils/fetch_data/fetch_config"
 import {toast} from "react-toastify"
 
@@ -203,22 +202,22 @@ const JobPost = ({jobs, company, setJobs, setOpenModal, token, isMember}) => {
     // Array field handlers
     const handleArrayAdd = (field) => {
         setFormData(prev => ({
-        ...prev,
-        [field]: [...(prev[field] || []), '']
+            ...prev,
+            [field]: [...(prev[field] || []), '']
         }));
     };
 
     const handleArrayChange = (field, index, value) => {
         setFormData(prev => ({
-        ...prev,
-        [field]: prev[field].map((item, i) => i === index ? value : item)
+            ...prev,
+            [field]: prev[field].map((item, i) => i === index ? value : item)
         }));
     };
 
     const handleArrayRemove = (field, index) => {
         setFormData(prev => ({
-        ...prev,
-        [field]: prev[field].filter((_, i) => i !== index)
+            ...prev,
+            [field]: prev[field].filter((_, i) => i !== index)
         }));
     };
 
@@ -227,9 +226,9 @@ const JobPost = ({jobs, company, setJobs, setOpenModal, token, isMember}) => {
         const newErrors = {};
 
         if (!formData.title?.trim()) {
-        newErrors.title = 'Title is required';
+            newErrors.title = 'Title is required';
         } else if (formData.title.length > 50) {
-        newErrors.title = 'Title cannot exceed 50 characters';
+            newErrors.title = 'Title cannot exceed 50 characters';
         }
 
         if (!formData.industry) {

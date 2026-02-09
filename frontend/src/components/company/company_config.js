@@ -5,6 +5,7 @@ import CompanyProfile from "./CompanyProfile"
 import CompanyHeaders from "./CompanyHeaders"
 import JobPost from "./JobPost"
 import Member from "./Member"
+import JobApplicant from "./JobApplicant"
 
 export {
     Stats,
@@ -13,5 +14,6 @@ export {
     CompanyProfile,
     CompanyHeaders,
     JobPost,
-    Member
+    Member,
+    JobApplicant
 }

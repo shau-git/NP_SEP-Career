@@ -24,19 +24,19 @@ const jobApplicantFields = {
             'date.format': 'interview_date must be a valid YYYY-MM-DD date'
     }),
 
-    interview_time: Joi.string()
-        .allow(null)
-        // Regex for 09:00AM format
-        .pattern(/^(0[1-9]|1[0-2]):[0-5][0-9](AM|PM)$/) 
-        .when('interview_date', {
-            is: Joi.exist().not(null),
-            then: Joi.required(),
-            otherwise: Joi.optional()
-        })
-        .messages({
-            'string.pattern.base': 'interview_time must be in HH:MM(AM|PM) (ex: 09:00AM) format',
-            'any.required': 'interview_time is required if a date is set'
-    }),
+    // interview_time: Joi.string()
+    //     .allow(null)
+    //     // Regex for 09:00AM format
+    //     .pattern(/^(0[1-9]|1[0-2]):[0-5][0-9](AM|PM)$/) 
+    //     .when('interview_date', {
+    //         is: Joi.exist().not(null),
+    //         then: Joi.required(),
+    //         otherwise: Joi.optional()
+    //     })
+    //     .messages({
+    //         'string.pattern.base': 'interview_time must be in HH:MM(AM|PM) (ex: 09:00AM) format',
+    //         'any.required': 'interview_time is required if a date is set'
+    // }),
 };
 
 
@@ -75,9 +75,9 @@ const createJobApplicantsSchema = Joi.object({
     interview_date: jobApplicantFields.interview_date.forbidden().messages({
         'any.forbidden': 'You are not allowed to create interview_date',
     }),
-    interview_time: jobApplicantFields.interview_time.forbidden().messages({
-        'any.forbidden': 'You are not allowed to create interview_time',
-    })
+    // interview_time: jobApplicantFields.interview_time.forbidden().messages({
+    //     'any.forbidden': 'You are not allowed to create interview_time',
+    // })
 });
 
 // PUT / PATCH schema (partial + forbidden)

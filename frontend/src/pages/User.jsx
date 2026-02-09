@@ -20,7 +20,6 @@ const User = () => {
     const fetchUser = async () => {
         const response = await getUser(user_id, token)
         const data = await response.json();
-console.log(data)
         if(response.status === 200) {
             setUser(data.data)
         } else if (response.status === 404) {

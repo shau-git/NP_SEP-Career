@@ -5,6 +5,6 @@ const {updateJobApplication} = require("../controllers/job_applicant_controller"
 const {updateJobApplicantSchema} = require("../middlewares/validators_config")
 
 // add member to company
-router.post('/:applicant_id', auth, updateJobApplicantSchema, updateJobApplication)
+router.put('/:applicant_id', auth, updateJobApplicantSchema, updateJobApplication)
 
 module.exports = router

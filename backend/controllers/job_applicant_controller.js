@@ -85,11 +85,12 @@ const getJobApplicantsCompany = asyncWrapper(async (req, res) => {
 
     const applicants = await JobApplicant.findAll({
         attributes: [
-        'applicant_id', 
-        'status', 
-        'expected_salary', 
-        'applied_date', 
-        'interview_date'
+            'user_id',
+            'applicant_id', 
+            'status', 
+            'expected_salary', 
+            'applied_date', 
+            'interview_date'
         ],
         include: [
             {
@@ -288,7 +289,7 @@ const updateJobApplication = asyncWrapper(async (req, res) => {
                 sender_id: session_user_id,
                 company_id: application.job_post.company_id,
                 job_post_id: application.job_post_id,
-                type: "TEAM_UPDATE",
+                type: "APPLICANT_STATUS_CHANGE",
                 message: `Status for application #${application.user.name} was changed by ${session_user_name} to ${updatedApplication.status}.`
             }))
         ];
