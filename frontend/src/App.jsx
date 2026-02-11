@@ -1,6 +1,6 @@
 import Nav from './components/navigation/Nav';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
-import {Home, User, Company, Notification, JobPost, UserCompany} from "./pages/page_config"
+import {Home, User, Company, Notification, JobPost, UserCompany, SearchJobs} from "./pages/page_config"
  
 
 // The Layout ensures the Nav is always visible
@@ -25,9 +25,10 @@ const App = () => {
               <Route path="company/:company_id" element={<Company />} />
               <Route path="notification/:user_id" element={<Notification />} />
               <Route path="job_post/:job_post_id" element={<JobPost />} />
+              <Route path="searchjob" element={<SearchJobs />} />
             
               {/* 404 Catch-all Route */}
-              {/* <Route path="*" element={<NotFound />} /> */}
+              <Route path="*" element={<Home/>} />
             </Route>
         </Routes>
         

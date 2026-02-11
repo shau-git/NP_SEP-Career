@@ -66,7 +66,7 @@ const updateEducation = asyncWrapper(async (req, res) => {
         where: {education_id},
     })
 
-    return res.status(200).json({message: "Education record added successfully", data: updatedEducation});
+    return res.status(200).json({message: "Education record updated successfully", data: updatedEducation});
     
 })
 

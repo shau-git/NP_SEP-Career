@@ -13,6 +13,7 @@ import PlusButton from "./PlusButton";
 import ActionsButton from "./ActionsButton";
 import ApplicantMoreMenu from "./ApplicantMoreMenu";
 import MemberMoreMenu from "./MemberMoreMenu";
+import getStatusBadge from "./getStatusBadge";
 
 export {
     SaveButton,
@@ -29,5 +30,6 @@ export {
     PlusButton,
     ActionsButton,
     ApplicantMoreMenu,
-    MemberMoreMenu
+    MemberMoreMenu,
+    getStatusBadge
 }

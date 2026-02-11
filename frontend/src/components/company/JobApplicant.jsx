@@ -1,5 +1,5 @@
 import {DollarSign, Calendar, Clock, Eye} from 'lucide-react'
-import {ApplicantMoreMenu} from "./utils/company_util_config"
+import {ApplicantMoreMenu, getStatusBadge, InputTag} from "./utils/company_util_config"
 import { Link } from 'react-router-dom';
 import {updateApplicant} from "../../utils/fetch_data/fetch_config"
 import {toast} from "react-toastify"
@@ -13,17 +13,6 @@ const JobApplicant = ({openInterviewModal, applicants,setApplicants,  token, set
 		interview_date: '',
 		// interview_time: ''
 	});
-
-    const getStatusBadge = (status) => {
-		const styles = {
-		PENDING: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-200',
-		INTERVIEW: 'bg-blue-500/20 border-blue-500/30 text-blue-200',
-		ACCEPTED: 'bg-green-500/20 border-green-500/30 text-green-200',
-		REJECTED: 'bg-red-500/20 border-red-500/30 text-red-200',
-		WITHDRAWN: 'bg-gray-500/20 border-gray-500/30 text-gray-200'
-		};
-		return styles[status] || styles.PENDING;
-	};
 
     // Validate form
     const validateForm = () => {
@@ -119,11 +108,12 @@ const JobApplicant = ({openInterviewModal, applicants,setApplicants,  token, set
                         onChange={(e) => setFilterStatus(e.target.value)}
                         className="w-full focus:bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
                     >
-                        <option value="all">All Status</option>
                         <option value="PENDING">Pending</option>
                         <option value="INTERVIEW">Interview</option>
                         <option value="ACCEPTED">Accepted</option>
                         <option value="REJECTED">Rejected</option>
+                        <option value="WITHDRAWN">Withdrawn</option>
+                        <option value="all">All Status</option>
                     </select>
                 </div>
             </div>
@@ -154,7 +144,7 @@ const JobApplicant = ({openInterviewModal, applicants,setApplicants,  token, set
                                     <div className="space-y-1 text-xs lg:text-sm">
                                         <div className="flex items-center gap-2 text-white/60">
                                             <DollarSign className="w-3 lg:w-4 h-3 lg:h-4" />
-                                            Expected: ${applicant.expected_salary}
+                                            Expected: <span className="text-green-500">${applicant.expected_salary}</span>
                                         </div>
                                         <div className="flex items-center gap-2 text-white/60">
                                             <Calendar className="w-3 lg:w-4 h-3 lg:h-4" />

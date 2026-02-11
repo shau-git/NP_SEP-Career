@@ -4,6 +4,7 @@ import User from "./User"
 import Notification from "./Notification"
 import JobPost from "./JobPost"
 import UserCompany from "./UserCompany"
+import SearchJobs from "./SearchJobs"
 
 export {
     Home, 
@@ -11,5 +12,6 @@ export {
     Company,
     Notification,
     JobPost,
-    UserCompany
+    UserCompany,
+    SearchJobs
 }

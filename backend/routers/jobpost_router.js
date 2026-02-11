@@ -14,6 +14,6 @@ router.get('/', getAllJobPost);
 router.get('/:job_post_id', getOneJobPost);
 
 // user apply for job
-router.get('/:job_post_id/jobapplicant', auth, createJobApplicantsSchema, applyForJob);
+router.post('/:job_post_id/jobapplicant', auth, createJobApplicantsSchema, applyForJob);
 
 module.exports = router

@@ -66,7 +66,7 @@ const updateExperience = asyncWrapper(async (req, res) => {
         where: {experience_id},
     })
 
-    return res.status(200).json({message: "Experience record added successfully", data: updatedExperience});
+    return res.status(200).json({message: "Experience record updated successfully", data: updatedExperience});
     
 })
 

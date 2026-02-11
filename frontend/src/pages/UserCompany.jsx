@@ -41,6 +41,17 @@ const UserCompany = () => {
 
     const [errors, setErrors] = useState({});
 
+    useEffect(() => {
+        if (showCreateModal) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [showCreateModal]);
+
     const fetchUser = async () => {
         const response = await getUser(user_id, token)
         const data = await response.json();
@@ -65,8 +76,15 @@ const UserCompany = () => {
             toast.error("User Id must be a number")
             return navigate('/')
         }
-        setSession(JSON.parse(localStorage.getItem('user')))
-        setToken(localStorage.getItem('token'))
+        const token = localStorage.getItem('token')
+        const session = JSON.parse(localStorage.getItem('user'))
+
+		if(!token || !session || session.user_id !== user_id){
+			return navigate('/')
+		} 
+
+        setSession(session)
+        setToken(token)
         setIsLoading(true)
         fetchUser()
     }, [])
@@ -158,11 +176,10 @@ const UserCompany = () => {
                 });
                 // clear new skill draft
                 toast.success(data.message);
+                handleCloseCreateModal()
             } else {
                 toast.error(data.message)
             }     
-            handleCloseCreateModal()
-          
         } catch (error) {
             console.error('Failed to create company:', error);
             setErrors({ submit: 'Failed to create company. Please try again.' });
@@ -329,7 +346,7 @@ const UserCompany = () => {
 
         {/* Create Company Modal */}
         {showCreateModal && (
-            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+            <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-xs">
                 <div className="bg-gray-900 rounded-lg max-w-2xl w-full border border-gray-700">
                     {/* Header */}
                     <div className="border-b border-gray-700 p-6 flex justify-between items-center">

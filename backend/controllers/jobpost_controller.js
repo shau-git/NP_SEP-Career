@@ -33,6 +33,7 @@ const getAllJobPost = asyncWrapper(async(req, res) => {
         ],
         attributes: [
             'job_post_id', 
+            'created_at',
             'company_id', 
             'title', 
             'industry', 
@@ -40,7 +41,6 @@ const getAllJobPost = asyncWrapper(async(req, res) => {
             'responsibilities', 
             'employment_type', 
             'experience', 
-            'created_at', 
             'removed', 
             'salary_start', 
             'salary_end', 
@@ -99,7 +99,8 @@ const getOneJobPost = asyncWrapper(async(req, res) => {
             'location', 
             'benefit', 
             'summary', 
-            'description'
+            'description',
+            'contact_email'
         ],
         include: [
             {

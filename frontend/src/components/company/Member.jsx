@@ -9,7 +9,7 @@ import {toast} from "react-toastify"
 const Member = ({company_id, members, company, session, setMembers, token}) => {
     const [createModal, setCreateModal] = useState(false)
     const [editingId, setEditingId] = useState(null)
-    const [searchUserId, setSearchUserId] = useState(null)
+    const [searchUserId, setSearchUserId] = useState('')
     const [searchingUser, setSearchingUser] = useState(false);
     const [searchedUser, setSearchedUser] = useState({})
     const [isCurrentMember, setIsCurrentMember] = useState('')

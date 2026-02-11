@@ -1,8 +1,9 @@
 import {getJobPost, getOneJobPost, updateJobPost, createJobPost} from "./fetch_job_post"
 import {getUser, updateUser, addUserData, deleteUserData, authUser} from "./fetch_user"
 import {getOneCompany, updateCompany, createCompany, getCompanyStats, getCompanies} from "./fetch_company"
-import {getJobApplicantCompany, getJobApplicantUser, updateApplicant} from "./fetch_job_applicant"
+import {getJobApplicantCompany, getJobApplicantUser, updateApplicant, createApplicant} from "./fetch_job_applicant"
 import {getCompanyMember, updateCompanyMember, createCompanyMember} from "./fetch_member"
+import {getNotification, putOneNotification, putAllNotification} from "./fecth_notification"
 
 export {
     getJobPost,
@@ -25,8 +26,13 @@ export {
     getJobApplicantCompany,
     getJobApplicantUser,
     updateApplicant,
+    createApplicant,
 
     getCompanyMember,
     updateCompanyMember,
     createCompanyMember,
+
+    getNotification,
+    putOneNotification,
+    putAllNotification
 }

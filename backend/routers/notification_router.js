@@ -8,10 +8,10 @@ const {
 } = require("../middlewares/validators_config")
 
 // get all nitification
-router.post('/', auth, getNotifications)
+router.get('/', auth, getNotifications)
 
 // mark all notification as read
-router.post('/markall', auth, markAllNotificationsAsRead)
+router.put('/markall', auth, markAllNotificationsAsRead)
 
 // mark 1 notification as read
 router.put('/:notification_id', auth, updateNotificationSchema, updateNotification)

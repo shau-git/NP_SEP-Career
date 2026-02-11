@@ -41,8 +41,22 @@ const updateApplicant = async (applicant_id, reqBody, token) => {
 }
 
 
+// apply job
+const createApplicant = async (job_post_id, reqBody, token) => {
+    const response = await fetch(`${backend_domain}/api/jobpost/${job_post_id}/jobapplicant`, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(reqBody)
+    });
+    return response;
+}
+
 export {
     getJobApplicantCompany,
     getJobApplicantUser,
-    updateApplicant
+    updateApplicant,
+    createApplicant
 }

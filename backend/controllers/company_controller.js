@@ -59,50 +59,23 @@ const getCompanyProfile = asyncWrapper(async (req, res) => {
 
 
 
-// // create company
-// const addCompanyProfile = asyncWrapper(async(req, res) => {
-
-//     // get the user_id from payload
-//     const user_id = parseInt(req.user.user_id)
-
-//     // get request body
-//     const data = req.body
-
-//     // prevent same company name
-//     const existName = await Company.findOne({
-//         where: {
-//             name: {
-//                 [Op.iLike]: data.name 
-//             }
-//         }
-//     })
-
-//     if(existName) {
-//         throw new BadRequestError(`${data.name} already registred, please change to another name.`)
-//     }
-
-//     // create company
-//     const addedCompany = await Company.create(data); 
-
-//     // create the user as the owner of the company
-//     const newCompanyOwner = await CompanyMember.create(
-//         {
-//             company_id: addedCompany.company_id,
-//             user_id,
-//             role: "owner",
-//             removed: false
-//         }
-//     )
-// console.log("<<<<<<<<<<<<<<<<<<", addedCompany.dataValues)
-//     newCompanyOwner.company = addedCompany.dataValues
-//     console.log(newCompanyOwner)
-
-//     return res.status(201).json({message: "Company registered successfully", data: newCompanyOwner});
-// })
-
+// create company
 const addCompanyProfile = asyncWrapper(async (req, res) => {
     const { user_id } = req.user; 
     const { name, industry, location, description, image } = req.body;
+
+    // prevent same company name
+    const existName = await Company.findOne({
+        where: {
+            name: {
+                [Op.iLike]: name 
+            }
+        }
+    })
+
+    if(existName) {
+        throw new BadRequestError(`${name} already registred, please change to another name.`)
+    }
 
     // 1. Create the Company first
     const newCompany = await Company.create({
@@ -159,13 +132,27 @@ const updateCompanyProfile = asyncWrapper(async (req, res) => {
     if (!company) {
         throw new NotFoundError(`Company id ${company_id} not found`);
     }
+    
+    // get request body
+    const value  = req.body
+
+    // prevent same company name
+    const existName = await Company.findOne({
+        where: {
+            name: {
+                [Op.iLike]: value.name 
+            }
+        }
+    })
+
+    if(existName) {
+        throw new BadRequestError(`${value.name} already registred, please change to another name.`)
+    }
+
 
     // get the user payload
     const payload = req.user
     const user_id = parseInt(payload.user_id)
-
-    // get request body
-    const value  = req.body
 
     // Authorization: Only admin and owner can modify company data
     const companyAdmin = await CompanyMember.findOne({

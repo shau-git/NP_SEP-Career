@@ -1,30 +1,33 @@
 import { useState, useEffect} from 'react'
-import {getOneJobPost} from "../utils/fetch_data/fetch_config"
+import {getOneJobPost, createApplicant} from "../utils/fetch_data/fetch_config"
 import { 
   MapPin, Briefcase, Clock, DollarSign, Users, Calendar, 
   Building2, Mail, Share2, Bookmark, ChevronLeft, Check, X
 } from 'lucide-react';
 import { toast } from "react-toastify"
 import Loading from "../components/Loading"
-import { useParams , useNavigate } from 'react-router-dom';
+import { useParams , useNavigate, Link } from 'react-router-dom';
+import {getDaysAgo} from "../utils/formatting"
+import Login from '../components/auth/Login';
+import {motion} from "framer-motion"
 
 export default function JobPostPage() {
     let { job_post_id } = useParams();
     job_post_id = parseInt(job_post_id)
 
     const navigate = useNavigate();
+    const [openLoginModal, setOpenLoginModal] = useState(false);
     const [jobPost, setJobPost] = useState(null)
-    const [isSaved, setIsSaved] = useState(false);
+    const [session, setSession] = useState(JSON.parse(localStorage.getItem('user')))
+    const [token, setToken] = useState(localStorage.getItem('token'))
     const [showApplyModal, setShowApplyModal] = useState(false);
     const [expectedSalary, setExpectedSalary] = useState('');
 
     const fetchJobPost = async () => {
-        console.log("start")
         const response = await getOneJobPost(job_post_id)
         const data = await response.json();
 
         if(response.status === 200) {
-            console.log(data.data)
             setJobPost(data.data)
         } else if (response.status === 404) {
             toast.error(data.message)
@@ -39,6 +42,8 @@ export default function JobPostPage() {
             toast.error("Job Post Id must be a number")
             return navigate('/')
         }
+        setSession(JSON.parse(localStorage.getItem('user')))
+        setToken(localStorage.getItem('token'))
         fetchJobPost()
     }, [])
 
@@ -48,33 +53,40 @@ export default function JobPostPage() {
         )
     }
 
+    // function for user when click to apply job
+    const handleApplyReq = () => {
+        if(!token || ! session){
+            setOpenLoginModal(true)
+            toast.error("Login or Sign Up to apply job!")
+            return
+        }
+        setShowApplyModal(true)
+    }
 
-    const getDaysAgo = (dateStr) => {
-        const posted = new Date(dateStr);
-        const today = new Date();
-        const days = Math.floor((today - posted) / (1000 * 60 * 60 * 24));
-        if (days === 0) return 'Posted today';
-        if (days === 1) return 'Posted yesterday';
-        return `Posted ${days} days ago`;
-    };
-
-    const handleApply = () => {
-        console.log('Applying with expected salary:', expectedSalary);
-        alert('Application submitted successfully!');
+    // proceed to apply job
+    const handleApplyJob = async () => {
+        try {
+            const response = await createApplicant (job_post_id, {expected_salary: expectedSalary}, token)
+            const data = await response.json()
+            if (response.status === 201) {
+                toast.success(data.message)
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error){
+            toast.error(error)
+            console.error(error)
+        }
         setShowApplyModal(false);
         setExpectedSalary('');
     };
 
-    const handleShare = () => {
-        navigator.clipboard.writeText(window.location.href);
-        alert('Job link copied to clipboard!');
-    };
 
     const fallback = jobPost?.company?.image?false:true    
 
     return (
         <div className="min-h-screen bg-slate-950 text-white">
-
+            {openLoginModal && <Login {...{setOpenLoginModal, active:null, openLoginModal, setToken, setSession}}/>}
             {/* Main Content */}
             <div className="pt-24 pb-12 px-6">
                 <div className="max-w-7xl mx-auto">
@@ -101,12 +113,18 @@ export default function JobPostPage() {
                                     }
                                     
                                     <div className="flex-1">
-                                        <h1 className="text-4xl font-bold mb-2">{jobPost.title}</h1>
+                                        <h1 className="text-xl md:text-3xl lg:text-4xl font-bold mb-2">{jobPost.title}</h1>
                                         <div className="flex flex-wrap items-center gap-4 text-slate-400">
-                                            <div className="flex items-center gap-2">
+                                            <motion.div 
+                                                whileHover={{
+                                                    color: "rgba(255,255,255,0.4)"
+                                                }}
+                                                onClick={() => navigate(`/company/${jobPost?.company?.company_id}`)} 
+                                                className="cursor-pointer flex items-center gap-2"
+                                            >
                                                 <Building2 className="w-4 h-4" />
                                                 <span>{jobPost?.company?.name}</span>
-                                            </div>
+                                            </motion.div>
                                             <div className="flex items-center gap-2">
                                                 <MapPin className="w-4 h-4" />
                                                 <span>{jobPost?.company?.location}</span>
@@ -214,7 +232,16 @@ export default function JobPostPage() {
                                         <img src={jobPost.company.image} alt={jobPost.company.name} className="w-12 h-12 object-contain" />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-semibold mb-1">{jobPost.company.name}</h3>
+                                        <motion.h3 
+                                            whileHover={{
+                                                color: "rgba(255,255,255,0.4)"
+                                            }}
+                                            transition={{ duration: 0.1, ease: "easeOut" }}
+                                            onClick={() => navigate(`/company/${jobPost?.company?.company_id}`)} 
+                                            className="cursor-pointer text-xl font-semibold mb-1"
+                                        >
+                                            {jobPost.company.name} <span className="text-xs">{" >"}</span>
+                                            </motion.h3>
                                         <p className="text-purple-400 text-sm mb-2">{jobPost.company.industry}</p>
                                     </div>
                                 </div>
@@ -234,37 +261,16 @@ export default function JobPostPage() {
                                 </div>
 
                                 <button
-                                    onClick={() => setShowApplyModal(true)}
-                                    className="w-full py-4 bg-linear-to-r from-purple-500 to-pink-500 rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-purple-500/50 hover:-translate-y-1 transition-all mb-3"
+                                    onClick={() => handleApplyReq()}
+                                    className="cursor-pointer w-full py-4 bg-linear-to-r from-purple-500 to-pink-500 rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-purple-500/50 hover:-translate-y-1 transition-all mb-3"
                                 >
                                     Apply Now
                                 </button>
 
-                                <div className="grid grid-cols-2 gap-3">
-                                    <button
-                                        onClick={() => setIsSaved(!isSaved)}
-                                        className={`py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
-                                        isSaved
-                                            ? 'bg-purple-500/30 border border-purple-500/50 text-purple-300'
-                                            : 'bg-white/5 border border-white/10 hover:bg-white/10'
-                                        }`}
-                                    >
-                                        <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
-                                        {isSaved ? 'Saved' : 'Save'}
-                                    </button>
-                                    <button
-                                        onClick={handleShare}
-                                        className="py-3 bg-white/5 border border-white/10 rounded-xl font-medium hover:bg-white/10 transition-all flex items-center justify-center gap-2"
-                                    >
-                                        <Share2 className="w-4 h-4" />
-                                        Share
-                                    </button>
-                                </div>
-
                                 <div className="mt-6 pt-6 border-t border-white/10">
                                     <div className="flex items-center gap-2 text-slate-400 text-sm mb-3">
                                         <Mail className="w-4 h-4" />
-                                        <span>Contact</span>
+                                        <span>Contact :</span>
                                     </div>
                                     <a
                                         href={`mailto:${jobPost.contact_email}`}
@@ -297,7 +303,7 @@ export default function JobPostPage() {
                                         </div>
                                         <div>
                                             <div className="text-slate-400 text-sm mb-1">Posted Date</div>
-                                            <div className="font-medium">{getDaysAgo(jobPost.created_at)}</div>
+                                            <div className="font-medium">{jobPost.created_at}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -356,9 +362,9 @@ export default function JobPostPage() {
                             </div>
 
                             <button
-                                onClick={handleApply}
+                                onClick={handleApplyJob}
                                 disabled={!expectedSalary}
-                                className="w-full py-4 bg-linear-to-r from-purple-500 to-pink-500 rounded-xl font-semibold hover:shadow-lg hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                className="cursor-pointer w-full py-4 bg-linear-to-r from-purple-500 to-pink-500 rounded-xl font-semibold hover:shadow-lg hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                             >
                                 Submit Application
                             </button>

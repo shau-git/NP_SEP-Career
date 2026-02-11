@@ -1,4 +1,5 @@
 import { Briefcase, UserPlus, Clock, Calendar } from 'lucide-react';
+import statItems from '../../utils/statItem';
 
 const StatCard = ({ title, value, icon: Icon, colorClass }) => (
     <div className="text-center">
@@ -11,6 +12,7 @@ const StatCard = ({ title, value, icon: Icon, colorClass }) => (
 
 );
 
+// This is the main function component
 const Stats = ({ stats, loading }) => {
     if (loading) {
         return (
@@ -22,35 +24,9 @@ const Stats = ({ stats, loading }) => {
         );
     }
 
-    const statItems = [
-        {
-            title: "Job Post",
-            value: stats?.totalJobPosts,
-            icon: Briefcase,
-            color: { bg: "bg-blue-50", text: "text-blue-400" }
-        },
-        {
-            title: "Applicants",
-            value: stats?.totalApplicants,
-            icon: UserPlus ,
-            color: { bg: "bg-purple-50", text: "text-green-400" }
-        },
-        {
-            title: "Pending",
-            value: stats?.pending,
-            icon: Clock,
-            color: { bg: "bg-amber-50", text: "text-amber-400" }
-        },
-        {
-            title: "Interview",
-            value: stats?.pendingInterview,
-            icon: Calendar,
-            color: { bg: "bg-indigo-50", text: "text-indigo-400" }
-        }
-    ];
     return (
         <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-8 bg-white/5 rounded-xl p-4 border border-white/10 ">
-            {statItems.map((item, index) => (
+            {statItems(stats).map((item, index) => (
                 <StatCard key={index} {...item} colorClass={item.color} />
             ))}
         </div>

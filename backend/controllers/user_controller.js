@@ -8,6 +8,7 @@ const Language = require("../models/language")
 const Experience = require("../models/experience")
 const Link = require("../models/link")
 const Company = require("../models/company")
+const JobPost = require("../models/jobpost")
 
 const CompanyMember = require("../models/company_member")
 const JobApplicant = require("../models/jobapplicant")
@@ -37,7 +38,26 @@ const getUserProfile = asyncWrapper(async (req, res) => {
     // Note: req.user should be populated by your auth middleware
     if (payload?.user_id && (parseInt(user_id) == payload?.user_id)) {
         includeOptions.push(
-            { model: JobApplicant, as: 'job_applicants', attributes: ['applicant_id', 'job_post_id', 'status', 'expected_salary', 'applied_date'] },
+            { 
+                model: JobApplicant, 
+                as: 'job_applicants', 
+                attributes: ['applicant_id', 'job_post_id', 'status', 'expected_salary', 'applied_date', 'interview_date'] ,
+                include: [
+                    {
+                        model: JobPost,
+                        as: 'job_post',
+                        attributes: ['title', 'industry'], // Get Job Title here
+                        include: [
+                            {
+                                model: Company,
+                                as: 'company',
+                                attributes: ['name', 'image'] // Get Company Name and Image here
+                            }
+                        ]
+                    }
+                ],
+                order: [["applicant_id", "DESC"]], 
+            },
             { 
                 model: CompanyMember, 
                 as: 'company_members', 

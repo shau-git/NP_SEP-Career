@@ -7,7 +7,7 @@ import { useNavigate , useParams} from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, X, Github, Chromium } from 'lucide-react';
 
 
-const Login = ({setOpenLoginModal, active, setHasToken, setHasSession}) => {
+const Login = ({setOpenLoginModal, active, setToken, setSession}) => {
     const navigate = useNavigate();
 
     const [isMobileHeight, setMobileHeigt] = useState(false)
@@ -22,8 +22,10 @@ const Login = ({setOpenLoginModal, active, setHasToken, setHasSession}) => {
 
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('user'));
-        if (currentUser && token) { //sessionStatus === 'authenticated' && session?.user_id
-            navigate(`/${active}/${currentUser.user_id}`);
+        if (currentUser && token ) { 
+            if(active){
+                navigate(`/${active}/${currentUser.user_id}`);
+            }
             setOpenLoginModal(false);
         }
     }, [active])
@@ -97,11 +99,13 @@ const Login = ({setOpenLoginModal, active, setHasToken, setHasSession}) => {
                     const user_id = data.user.user_id
                     localStorage.setItem('user', JSON.stringify(data.user));
                     localStorage.setItem('token', data.token);
-                    setHasToken(true)
-                    setHasSession(true)
+                    setToken(localStorage.getItem('token'))
+                    setSession(JSON.parse(localStorage.getItem('user')))
                     toast.success( data.message || "Sucessfully Logged In.")
                     setOpenLoginModal(false)
-                    navigate(`/${active}/${user_id}`);
+                    if(active) {
+                        navigate(`/${active}/${user_id}`);
+                    }
                 } else {
                     toast.error(data.message)
                 }
@@ -136,7 +140,7 @@ const Login = ({setOpenLoginModal, active, setHasToken, setHasSession}) => {
                 {/* Close button */}
                 <button
                     onClick={() => setOpenLoginModal(false)}
-                    className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all group"
+                    className="cursor-pointer absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all group"
                 >
                     <X className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" />
                 </button>
@@ -155,7 +159,7 @@ const Login = ({setOpenLoginModal, active, setHasToken, setHasSession}) => {
                 <div className="flex gap-2 mb-8 bg-white/5 p-1 rounded-xl">
                     <button
                         onClick={() => setIsLogin(true)}
-                        className={`flex-1 py-2 rounded-lg font-semibold transition-all ${
+                        className={`cursor-pointer flex-1 py-2 rounded-lg font-semibold transition-all ${
                         isLogin
                             ? 'bg-linear-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                             : 'text-white/60 hover:text-white/80'
@@ -165,7 +169,7 @@ const Login = ({setOpenLoginModal, active, setHasToken, setHasSession}) => {
                     </button>
                     <button
                         onClick={() => setIsLogin(false)}
-                        className={`flex-1 py-2 rounded-lg font-semibold transition-all ${
+                        className={`cursor-pointer flex-1 py-2 rounded-lg font-semibold transition-all ${
                         !isLogin
                             ? 'bg-linear-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                             : 'text-white/60 hover:text-white/80'
@@ -284,7 +288,7 @@ const Login = ({setOpenLoginModal, active, setHasToken, setHasSession}) => {
 
                     <button
                         onClick={handleSubmit}
-                        className="w-full bg-linear-to-r from-purple-500 to-pink-500 text-white font-semibold py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                        className="cursor-pointer w-full bg-linear-to-r from-purple-500 to-pink-500 text-white font-semibold py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all"
                     >
                         {isLogin ? 'Sign In' : 'Create Account'}
                     </button>
@@ -295,10 +299,10 @@ const Login = ({setOpenLoginModal, active, setHasToken, setHasSession}) => {
                     <p className="text-white/60 text-sm">
                         {isLogin ? "Don't have an account? " : 'Already have an account? '}
                         <button
-                        onClick={switchMode}
-                        className="text-purple-400 hover:text-purple-300 font-semibold transition-colors"
+                            onClick={switchMode}
+                            className="cursor-pointer text-purple-400 hover:text-purple-300 font-semibold transition-colors"
                         >
-                        {isLogin ? 'Sign up' : 'Sign in'}
+                            {isLogin ? 'Sign up' : 'Sign in'}
                         </button>
                     </p>
                 </div>

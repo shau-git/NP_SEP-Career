@@ -73,7 +73,7 @@ CREATE INDEX idx_language_user_id ON "language"(user_id);
 -- 7. Create Company table
 CREATE TABLE IF NOT EXISTS "company" (
     company_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(50) UNIQUE NOT NULL,
     image TEXT,
     image_public_id VARCHAR(255),
     industry VARCHAR(20) NOT NULL CHECK(industry IN ('IT & Technology', 'Healthcare', 'Finance & Business', 'F&B (Food & Bev)', 'Creative & Media', 'Education', 'Engineering', 'Retail & Sales', 'Logistics & Trades')),
@@ -223,7 +223,7 @@ INSERT INTO link (user_id, type, url) VALUES
 -- 7. COMPANY  (not inserting image_public_id)
 INSERT INTO company (name, image, industry, location, description) VALUES 
 ('TechCorp', 'https://logo.clearbit.com/google.com', 'IT & Technology', 'Singapore', 'Leading tech.'),
-('DBS Bank', 'https://logo.clearbit.com/dbs.com', 'Finance & Business', 'Marina Bay', 'Banking services.'),
+('DBS Bank', 'https://financialit.net/sites/default/files/dbs-bank.png', 'Finance & Business', 'Marina Bay', 'Banking services.'),
 ('BuildSG', 'https://logo.clearbit.com/bca.gov.sg', 'Engineering', 'Jurong', 'Civil engineering.'),
 ('SG Health', NULL, 'Healthcare', 'Outram', 'General hospital.'),
 ('Studio 101', 'https://logo.clearbit.com/canva.com', 'Creative & Media', 'Clarke Quay', 'Ad agency.'),

@@ -36,7 +36,9 @@ const getJobApplicationsUser = asyncWrapper(async (req, res) => {
             'applied_date',
             'interview_date',
             'interview_time'
-        ]
+        ],
+        order: [["applicant_id", "DESC"]]
+
     });
 
     // 4. Return JSON response
@@ -92,6 +94,7 @@ const getJobApplicantsCompany = asyncWrapper(async (req, res) => {
             'applied_date', 
             'interview_date'
         ],
+        order: [["applicant_id", "DESC"]], 
         include: [
             {
                 // 2. Fetch the User data (Foreign Key: user_id)
@@ -152,7 +155,8 @@ const applyForJob = asyncWrapper(async (req, res) => {
         const applyJob = await JobApplicant.create({
             ...value,
             user_id: applicant_user_id,
-            job_post_id: parseInt(job_post_id)
+            job_post_id: parseInt(job_post_id),
+            applied_date: new Date().toISOString().split('T')[0]
         }, { transaction: t });
 
         // 3. Notification Logic

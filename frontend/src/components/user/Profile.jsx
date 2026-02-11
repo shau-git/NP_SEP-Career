@@ -84,7 +84,7 @@ const Profile = ({ session, token, user, user_id, setUser, Camera, MapPin, Brief
                                             className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white/90 focus:outline-none focus:border-purple-500"
                                             placeholder='John Doe'
                                         />
-                                        <SaveButton handleSave={handleSaveName}/>
+                                        <SaveButton handleSave={handleSaveName} title="Save"/>
                                     </div>
 
                                     {/*Edit Role */}
@@ -95,7 +95,7 @@ const Profile = ({ session, token, user, user_id, setUser, Camera, MapPin, Brief
                                             className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white/90 focus:outline-none focus:border-purple-500"
                                             placeholder='John Doe'
                                         />
-                                        <SaveButton handleSave={handleSaveRole}/>
+                                        <SaveButton handleSave={handleSaveRole} title="Save"/>
                                     </div>
                                 </>
                             ) : (

@@ -5,7 +5,7 @@ import Education from "./Education";
 import Skill from "./Skill";
 import Language from "./Language";
 import Links from "./Links";
-
+import Stats from "./Stats";
 
 
 export {
@@ -15,5 +15,6 @@ export {
     Experience,
     Skill,
     Language,
-    Links
+    Links,
+    Stats
 }

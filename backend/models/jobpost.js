@@ -74,8 +74,8 @@ const JobPost = sequelize.define('JobPost', {
   tableName: 'job_post', // table name in Neon
   timestamps: false,
   indexes: [
-    { fields: ['company_id'] }, // @@index([company_id])
-    { fields: ['created_at'] }  // @@index([created_at])
+    { fields: ['company_id'] }, 
+    { fields: ['created_at'] } 
   ]
 });
 

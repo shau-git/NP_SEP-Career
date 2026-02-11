@@ -7,13 +7,12 @@ const asyncWrapper = require("./utils/wrapper");
 const getNotifications = asyncWrapper(async (req, res) => {
 
     const user_id = parseInt(req.user.user_id);
-
+    
     // 2. Fetch notifications with associations (includes)
     const notifications = await Notification.findAll({
-        where: { user_id: user_id },
+        where: {user_id},
         // Order by created_at descending, then ID descending
         order: [
-            ['created_at', 'DESC'],
             ['notification_id', 'DESC']
         ],
         include: [

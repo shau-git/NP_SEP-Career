@@ -9,8 +9,8 @@ const Nav = () => {
     const [openLoginModal, setOpenLoginModal] = useState(false);
     const [openProfileDropdown, setOpenProfileDropdown] = useState(false);
     const [active, setActive] = useState('');
-    const [hasToken, setHasToken] = useState(false)
-    const [hasSession, setHasSession] = useState(false)
+    const [session, setSession] = useState(JSON.parse(localStorage.getItem('user')))
+    const [token, setToken] = useState(localStorage.getItem('token'))
     const profileDropdownRef = useRef(null);
 
     const navigate = useNavigate(); // Standard React Router hook
@@ -59,8 +59,8 @@ const Nav = () => {
         if (!token || !currentUser) {
             setOpenLoginModal(true);
         } else {
-            setHasToken(true)
-            setHasSession(currentUser)
+            setToken(token)
+            setSession(currentUser)
             if(stateToActive !== "user") {
                 navigate(`/${stateToActive}/${currentUser.user_id}`);
             } else {
@@ -84,7 +84,7 @@ const Nav = () => {
 
     return (
         <>
-            {openLoginModal && <Login {...{setOpenLoginModal, active, openLoginModal, setHasToken, setHasSession}}/>}
+            {openLoginModal && <Login {...{setOpenLoginModal, active, openLoginModal, setToken, setSession}}/>}
             <nav className="fixed top-0 w-full bg-slate-950/80 backdrop-blur-lg border-b border-white/10 z-10">
                 <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex justify-between items-center">
                     {/* TOP LEFT: HOME */}
@@ -101,7 +101,7 @@ const Nav = () => {
                         <Tooltip name="Company">
                             <button 
                                 onClick={() => handleClick("usercompany")}
-                                className={`cursor-pointer group w-10 h-10 rounded-full ${hasToken && hasSession && active === "usercompany"? "border-purple-500 border-2":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
+                                className={`cursor-pointer group w-10 h-10 rounded-full ${token && session && active === "usercompany"? "border-purple-500 border-2":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
                             >
                                 <Building2 className="w-4.5 h-4.5" />
                             </button>
@@ -110,7 +110,7 @@ const Nav = () => {
                         <Tooltip name="Notification">
                             <button 
                                 onClick={() => handleClick("notification")}
-                                className={`cursor-pointer group w-10 h-10 rounded-full ${hasToken && hasSession && active === "notification"? "border-purple-500 border-2" :"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
+                                className={`cursor-pointer group w-10 h-10 rounded-full ${token && session && active === "notification"? "border-purple-500 border-2" :"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
                             >
                                 <Bell className="w-4.5 h-4.5" />
                             </button>
@@ -120,12 +120,12 @@ const Nav = () => {
                             <Tooltip name="Profile">
                                 <button 
                                     onClick={() => handleClick("user")}
-                                    className={`overflow-hidden cursor-pointer group w-10 h-10 rounded-full ${hasToken && hasSession && active === "user"? "border-purple-500 border-2 ":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all`}
+                                    className={`overflow-hidden cursor-pointer group w-10 h-10 rounded-full ${token && session && active === "user"? "border-purple-500 border-2 ":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all`}
                                 >
                                     <UserRound className="w-5 h-5" />
                                 </button>
                             </Tooltip>
-                            {openProfileDropdown && <ProfileDropdown {...{setActive, setOpenProfileDropdown, setHasToken, setHasSession}}/>}
+                            {openProfileDropdown && <ProfileDropdown {...{setActive, setOpenProfileDropdown, setToken, setSession}}/>}
                         </div>
                         
                     </div>

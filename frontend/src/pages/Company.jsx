@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
-import { 
-	Building2, Users, Briefcase, UserPlus, Plus, Edit2, Trash2, 
-	MoreVertical, CheckCircle, XCircle, Clock, Eye, Settings, ArrowLeft,
-	Mail, MapPin, Calendar, DollarSign, Filter
-} from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useParams , useNavigate} from 'react-router-dom';
 import Loading from "../components/Loading"
 import { toast } from 'react-toastify';
 import {Tabs, CompanyHeaders, JobPost, Member, JobApplicant} from "../components/company/company_config"
-import {InputTag} from "../components/company/utils/company_util_config"
 import {
 	getOneCompany,  
 	getJobPost, 
@@ -37,11 +32,7 @@ export default function CompanyDetailPage() {
   	const [statsLoading, setStatsLoading] = useState(false);
 	const [openModal, setOpenModal] = useState(false)
 	const [openInterviewModal, setOpenInterviewModal] = useState(null) //will store the applicant_id that to be schedule for interview
-	// const [errors, setErrors] = useState({});
-	// const [interviewDraft, setInterviewDraft] = useState({
-	// 	interview_date: '',
-	// 	// interview_time: ''
-	// });
+
 	const navigate = useNavigate()
 
 	let {company_id} = useParams();

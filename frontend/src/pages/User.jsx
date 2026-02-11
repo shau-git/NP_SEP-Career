@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import {getUser, updateUser, addUserData, deleteUserData} from "../utils/fetch_data/fetch_config"
 import { toast } from "react-toastify"
 import { Edit2} from 'lucide-react';
-import {Profile, Summary,  Education, Experience, Skill, Language, Links} from "../components/user/user_config"
+import {Profile, Summary,  Education, Experience, Skill, Language, Links, Stats} from "../components/user/user_config"
 import Loading from "../components/Loading"
 import { useParams , useNavigate} from 'react-router-dom';
 
@@ -16,12 +16,28 @@ const User = () => {
     const [token, setToken] = useState(localStorage.getItem('token'))
     const [summaryDraft, setSummaryDraft] = useState('');
     const [newSkill, setNewSkill] = useState('');
+    const [jobApp, setJobApp] = useState([])
+    const [stats, setStats] = useState({totalApplicants:0 , pendingInterview:0, interview:0})
 
     const fetchUser = async () => {
         const response = await getUser(user_id, token)
         const data = await response.json();
         if(response.status === 200) {
             setUser(data.data)
+
+            // count user stats
+            const {job_applicants} = data.data
+            if (job_applicants && job_applicants.length > 0) {
+                const counts = job_applicants.reduce((acc, applicant) => {
+                    if (applicant.status === 'PENDING') acc.pending += 1;
+                    if (applicant.status === 'INTERVIEW') acc.pendingInterview += 1;
+                    
+                    return acc;
+                }, { pendingInterview: 0, pending: 0 });
+
+                setStats({totalApplicants: job_applicants.length, ...counts});
+                setJobApp(job_applicants)
+            }
         } else if (response.status === 404) {
             toast.error(data.message)
             return navigate('/')
@@ -190,6 +206,9 @@ const User = () => {
                     
 
                     <div className="lg:col-span-1 space-y-6">
+                        {/*Job Application stats */}
+                        {token && session && session.user_id === user_id && <Stats {...{stats, jobApp}}/>}
+
                         {/* Contact & Links */}
                         <Links {...{session, token, setUser, user_id,  setEditMode, editMode, email, links,  handleRemoveLink, newLink, setNewLink, handleAddLink}}/>
 
