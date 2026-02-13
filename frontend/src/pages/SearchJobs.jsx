@@ -179,7 +179,7 @@ export default function SearchResults({setFetchCount}) {
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                             <input
                                 type="text"
-                                placeholder="Job title, keywords, or company"
+                                placeholder="Search Job title"
                                 value={searchTitle}
                                 onChange={(e) => setSearchTitle(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && setSearching(true)}

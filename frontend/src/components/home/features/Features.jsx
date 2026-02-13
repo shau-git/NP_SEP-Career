@@ -3,8 +3,7 @@ import {JobCards} from "../home_config"
 import {getJobPost} from "../../../utils/fetch_data/fetch_config"
 import {toast} from "react-toastify"
 
-const Features = () => {
-    const [jobPost, setJobPost] = useState(null)
+const Features = ({jobPost, setJobPost, setIndustry}) => {
     const key = useId()
 
     const fetchJobPost = async () => {
@@ -12,6 +11,25 @@ const Features = () => {
         const data = await response.json();
         if(response.status === 200) {
             setJobPost(data)
+
+            // Counts the total number of jobs per industry
+            const counts = data.data.reduce((acc, job) => {
+                const ind = job.industry;
+                acc[ind] += 1
+                return acc;
+            }, {
+                'IT & Technology': 0,
+                'Finance & Business': 0,
+                'Engineering': 0,
+                'Healthcare': 0,
+                'Creative & Media': 0,
+                'F&B (Food & Bev)': 0,
+                'Retail & Sales': 0,
+                'Logistics & Trades': 0,
+                'Education': 0
+            });
+
+            setIndustry(counts);
         } else {
             toast.error(data.message)
         }

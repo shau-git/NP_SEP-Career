@@ -220,6 +220,18 @@ const JobPost = ({jobs, company, setJobs, setOpenModal, token, isMember}) => {
         }));
     };
 
+    // Prevent body scroll when modal is open
+    useEffect(() => {
+        if (isAdding || editingId) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isAdding, editingId]);
+
     // Validation
     const validateForm = () => {
         const newErrors = {};

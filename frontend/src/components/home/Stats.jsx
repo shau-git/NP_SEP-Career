@@ -17,7 +17,6 @@ const Stats = () => {
         try {
             const response = await getPlatformStats();
             const result = await response.json();
-            console.log(result)
             if (response.status === 200) {
                 // 2. Update state with real data from backend
                 setStats({

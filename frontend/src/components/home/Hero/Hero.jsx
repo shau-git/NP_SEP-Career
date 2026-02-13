@@ -51,7 +51,7 @@ const Hero = () => {
                             type="text" 
                             value={searchTitle}
                             onChange={(e) => setSearchTitle(e.target.value)}
-                            placeholder="Search job title"
+                            placeholder="Search Job title"
                             className="
                                 w-full py-4 pl-14 pr-12 
                                 bg-white/5 border border-white/10 rounded-full 

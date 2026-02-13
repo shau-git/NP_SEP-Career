@@ -1,10 +1,8 @@
-import React from 'react'
 import { motion } from "framer-motion";
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Category = () => {
+const Category = ({industry}) => {
     const navigate = useNavigate()
-    // const [searchParams, setSearchParams] = useSearchParams();
     
     const handleClick = (industry) => {
         const params = new URLSearchParams();
@@ -62,7 +60,7 @@ const Category = () => {
                             {cat.Icon}
                         </div>
                         <div className="text-lg font-semibold mb-2">{cat.name}</div>
-                        <div className="text-sm text-gray-400 relative z-1">467 jobs</div>
+                        <div className="text-sm text-gray-400 relative z-1">{industry[cat.name] || 0} jobs</div>
                     </motion.button>
                 ))}
             </div>

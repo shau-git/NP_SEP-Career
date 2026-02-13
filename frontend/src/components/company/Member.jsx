@@ -97,7 +97,6 @@ const Member = ({company_id, members, company, session, setMembers, token}) => {
             handleCancel()
             toast.success(data.message)
         } else {
-            console.log(data.message)
             toast.error(data.message)
         }
     }
@@ -113,7 +112,6 @@ const Member = ({company_id, members, company, session, setMembers, token}) => {
 
     // function when chaning from the modal's dropwdown list
     const handleChange = (field, value) => {
-        console.log(editingId)
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
