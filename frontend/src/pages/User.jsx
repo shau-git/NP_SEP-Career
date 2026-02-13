@@ -6,7 +6,7 @@ import {Profile, Summary,  Education, Experience, Skill, Language, Links, Stats}
 import Loading from "../components/Loading"
 import { useParams , useNavigate} from 'react-router-dom';
 
-const User = () => {
+const User = ({setFetchCount}) => {
     let {user_id} = useParams();
 	user_id = parseInt(user_id)
 
@@ -45,6 +45,11 @@ const User = () => {
             toast.error(data.message)
         }
     }
+
+    // to fetch the lates notification count whenever the data is changed
+    useEffect(() => {
+        if(token) setFetchCount(true)
+    }, [user, newSkill, jobApp, stats])
 
     useEffect(() => {
 		if(!user_id) {

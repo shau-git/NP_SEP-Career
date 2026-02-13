@@ -1,7 +1,6 @@
 import { useState , useEffect} from 'react';
 import { Bell, ArrowLeft, Check, CheckCheck } from 'lucide-react';
 import {getNotification, putOneNotification, putAllNotification} from "../utils/fetch_data/fetch_config"
-import {formatDate} from "../utils/formatting"
 import {toast} from "react-toastify"
 import { useParams , useNavigate} from 'react-router-dom';
 
@@ -138,12 +137,18 @@ const NotificationPage = () => {
     const unreadCount = notifications.filter(n => !n.is_read).length;
 
     return (
-		<div className="min-h-screen bg-slate-950 relative">
+		<div className="min-h-screen bg-slate-950 relative text-white">
 			{/* Header */}
 			<div className="z-1 sticky top-0 bg-slate-900 backdrop-blur-sm border-b border-blue-900/30 pt-20">
 				<div className="max-w-4xl mx-auto px-3 py-4">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center">
+							<button 
+								onClick={() => navigate(-1)}
+								className="cursor-pointer p-2 hover:bg-white/10 rounded-lg transition-colors"
+							>
+								<ArrowLeft className="w-5 h-5" />
+							</button>
 							<div className="flex items-center gap-2 sm:gap-3">
 								<div className="p-2 bg-blue-500/20 rounded-lg">
 									<Bell className="w-4 h-4 sm:w-6 sm:h-6 text-blue-400" />
@@ -175,12 +180,7 @@ const NotificationPage = () => {
 				<div className="space-y-3">
 					{notifications.map((notification) => {
 						let image = false
-						let alt
-						// if (notification.sender) {
-						// 	if(notification.sender.image) image = notification.sender.image
-						// } else if (notification?.company.image) {
-						// 	image = notification.company.image
-						// }
+						let alt;
 
 						if (['COMPANY_PROFILE_UPDATE', 'JOB_POST_CREATED', 'APPLICANT_STATUS_CHANGE','JOB_POST_CREATED'].includes(notification.type)) {
 							if(notification.company?.image) {

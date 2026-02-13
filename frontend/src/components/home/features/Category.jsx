@@ -1,7 +1,17 @@
 import React from 'react'
 import { motion } from "framer-motion";
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 const Category = () => {
+    const navigate = useNavigate()
+    // const [searchParams, setSearchParams] = useSearchParams();
+    
+    const handleClick = (industry) => {
+        const params = new URLSearchParams();
+        params.append('industry', industry);
+        return navigate(`/searchjob?${params}`)
+    }
+
     const categories = [
         { name: 'IT & Technology', Icon: "💻", color: 'text-blue-600', bg: 'bg-blue-100' },
         { name: 'Finance & Business', Icon: "💼", color: 'text-emerald-600', bg: 'bg-emerald-100' },
@@ -33,6 +43,7 @@ const Category = () => {
                         whileHover="hover"
                         initial="initial"
                         transition={{ duration: 0.3, ease: "easeOut" }}
+                        onClick={() => handleClick(cat.name)}
                     >
                         <motion.div 
                             className="absolute inset-0 z-5"

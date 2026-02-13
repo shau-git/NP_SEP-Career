@@ -10,7 +10,7 @@ const JobCards = ({data}) => {
     return (
         <motion.div 
             className="
-                bg-[rgba(255,255,255,0.05)] p-8 rounded-2xl cursor-pointer 
+                bg-[rgba(255,255,255,0.05)] p-8 rounded-2xl 
                 backdrop-blur-[10px] border border-white/10"
             variants={{
                 hover: {
@@ -87,7 +87,7 @@ const JobCards = ({data}) => {
                 <Link 
                     to={`/job_post/${job_post_id}`}
                     target="_blank"
-                    className="px-4 py-2  bg-[#667eea] rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+                    className="px-4 py-2 text-white bg-[#667eea] rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
                 >
                     Visit
                 </Link>
@@ -95,5 +95,5 @@ const JobCards = ({data}) => {
         </motion.div>
     )
 }
-//router.push(`/job_post/${job_post_id}`)
+
 export default JobCards

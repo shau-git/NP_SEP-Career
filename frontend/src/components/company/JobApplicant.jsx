@@ -5,8 +5,6 @@ import {updateApplicant} from "../../utils/fetch_data/fetch_config"
 import {toast} from "react-toastify"
 import {useState} from "react"
 
-// token, setOpenInterviewModal, filterJob, setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants, handleStatusChange, isMember
-// token, filterJob setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants,
 const JobApplicant = ({openInterviewModal, applicants,setApplicants,  token, setOpenInterviewModal, filterJob, setFilterJob, jobs, filterStatus, setFilterStatus, filteredApplicants}) => {
     const [errors, setErrors] = useState({});
     const [interviewDraft, setInterviewDraft] = useState({

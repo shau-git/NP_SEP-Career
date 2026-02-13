@@ -10,27 +10,50 @@ const JobApplicant = require("../models/jobapplicant")
 
 //GET All job post
 const getAllJobPost = asyncWrapper(async(req, res) => {
-    const {title, industry, post, company_id} = req.query
-    let filter = {} ;
-    if(post === "active") {
-        filter.removed = false
-        console.log(filter)
-    }
+    // Destructure all possible filters from frontend
+    const { title, industry, company_id,  employment_type, experience, sortBy } = req.query;
+    // console.log(req.query, '////')
+    let filter = {removed: false};
     
-    title && (filter.title = { [Op.iLike]: `%${title}%` })
-    industry && (filter.industry = { [Op.iLike]: `%${industry}%` })
+    // 1. Helper function to handle both string and array inputs
+    const ensureArray = (input) => {
+        if (!input) return null;
+        if (Array.isArray(input)) return input;
+        // If it's a string, it might be "Full-Time,Part-Time" or just "Full-Time"
+        return input.split(',');
+    };
 
-    if (company_id){
-        if(parseInt(company_id)){company_id && (filter.company_id = parseInt(company_id))}
-        else {throw new BadRequestError(`company_id must ba a number!`)}
+    // 2. Text Search Filters (using iLike for case-insensitive matching)
+    if (title) filter.title = { [Op.iLike]: `%${title}%` };
+    
+    const industryArray = ensureArray(industry);
+    if (industry) filter.industry = { [Op.in]: industryArray };
+
+    const employment_typeArray = ensureArray(employment_type);
+    if (employment_type) filter.employment_type = { [Op.in]: employment_typeArray };
+
+    const experienceArray = ensureArray(experience);
+    if (experience) filter.experience = { [Op.in]: experienceArray };
+
+
+    // 4. Company Specific Filter
+    if (company_id) {
+        if (parseInt(company_id)) {
+            filter.company_id = parseInt(company_id);
+            delete filter.removed
+        } else {
+            throw new BadRequestError(`company_id must be a number!`);
+        }
     }
+
+    // 5. Dynamic Sorting
+    let order = [['created_at', 'DESC']]; // Default
+    if (sortBy === 'salary-high') order = [['salary_end', 'DESC']];
+    if (sortBy === 'salary-low') order = [['salary_start', 'ASC']];
 
     const jobposts = await JobPost.findAll({
         where: filter,
-        order: [
-            ['created_at', 'DESC'],
-            ['job_post_id', 'DESC']
-        ],
+        order: order,
         attributes: [
             'job_post_id', 
             'created_at',

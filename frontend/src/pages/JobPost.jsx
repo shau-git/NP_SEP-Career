@@ -1,17 +1,17 @@
 import { useState, useEffect} from 'react'
 import {getOneJobPost, createApplicant} from "../utils/fetch_data/fetch_config"
 import { 
-  MapPin, Briefcase, Clock, DollarSign, Users, Calendar, 
-  Building2, Mail, Share2, Bookmark, ChevronLeft, Check, X
+  MapPin, Briefcase, Clock, DollarSign, Calendar, 
+  Building2, Mail, Check, X
 } from 'lucide-react';
 import { toast } from "react-toastify"
 import Loading from "../components/Loading"
-import { useParams , useNavigate, Link } from 'react-router-dom';
+import { useParams , useNavigate } from 'react-router-dom';
 import {getDaysAgo} from "../utils/formatting"
 import Login from '../components/auth/Login';
 import {motion} from "framer-motion"
 
-export default function JobPostPage() {
+export default function JobPostPage({setFetchCount}) {
     let { job_post_id } = useParams();
     job_post_id = parseInt(job_post_id)
 
@@ -42,9 +42,12 @@ export default function JobPostPage() {
             toast.error("Job Post Id must be a number")
             return navigate('/')
         }
+        const token = localStorage.getItem('token')
         setSession(JSON.parse(localStorage.getItem('user')))
-        setToken(localStorage.getItem('token'))
+        setToken(token)
         fetchJobPost()
+        // fetch the latest unread notification
+        if(token)setFetchCount(true)
     }, [])
 
     if (!jobPost) {
@@ -79,6 +82,8 @@ export default function JobPostPage() {
         }
         setShowApplyModal(false);
         setExpectedSalary('');
+        // fetch the latest unread notification, user can only login to apply a job
+        setFetchCount(true)
     };
 
 

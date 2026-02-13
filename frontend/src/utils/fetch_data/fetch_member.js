@@ -16,6 +16,7 @@ const getCompanyMember = async (company_id, token, user_id=null) => {
     return response;
 };
 
+
 // update company data
 const updateCompanyMember = async (company_id,  reqBody, token, company_member_id) => {
 

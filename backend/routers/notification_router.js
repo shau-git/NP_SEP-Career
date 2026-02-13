@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const auth = require("../middlewares/authentication")
-const {getNotifications, updateNotification, markAllNotificationsAsRead} = require("../controllers/notification_controller")
+const {getNotifications, updateNotification, markAllNotificationsAsRead, getUnreadNotificationCount} = require("../controllers/notification_controller")
 const {
     updateNotificationSchema, 
 
@@ -9,6 +9,9 @@ const {
 
 // get all nitification
 router.get('/', auth, getNotifications)
+
+// get notification count 
+router.get('/unread_count', auth, getUnreadNotificationCount)
 
 // mark all notification as read
 router.put('/markall', auth, markAllNotificationsAsRead)

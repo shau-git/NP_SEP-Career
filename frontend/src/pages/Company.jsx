@@ -8,15 +8,12 @@ import {
 	getOneCompany,  
 	getJobPost, 
 	getJobApplicantCompany, 
-	updateApplicant,
 	getCompanyStats,
 	getCompanyMember,
-    updateCompanyMember,
-    createCompanyMember,
 } from "../utils/fetch_data/fetch_config"
 
 
-export default function CompanyDetailPage() {
+export default function CompanyDetailPage({setFetchCount}) {
 	const [session, setSession] = useState(JSON.parse(localStorage.getItem('user')))
     const [token, setToken] = useState(localStorage.getItem('token'))
 	const [activeTab, setActiveTab] = useState('jobs'); // jobs, applicants, members
@@ -37,7 +34,7 @@ export default function CompanyDetailPage() {
 
 	let {company_id} = useParams();
 	company_id = parseInt(company_id)
-
+	
 	useEffect(() => {
         if (openModal || openInterviewModal) {
             document.body.style.overflow = 'hidden';
@@ -85,6 +82,11 @@ export default function CompanyDetailPage() {
 		else if (activeTab === 'applicants') fetchApplicants();
 		else if (activeTab === 'members') fetchMembers();
 	}, [activeTab]);
+
+	// fetch latest unread notification count, whenever the data is changed
+	useEffect(() => {
+		if(token) setFetchCount(true)
+	}, [company, jobs, applicants, members, stats, activeTab])
 
 
 	// get company stats
@@ -181,7 +183,7 @@ export default function CompanyDetailPage() {
 				<div className="max-w-7xl mx-auto px-6 py-4">
 					<button 
 						onClick={() => navigate(-1)}
-						className="p-2 hover:bg-white/10 rounded-lg transition-colors mb-2"
+						className="cursor-pointer p-2 hover:bg-white/10 rounded-lg transition-colors mb-2"
 					>
 						<ArrowLeft className="w-5 h-5" />
 					</button>

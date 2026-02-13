@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import {motion} from "framer-motion"
 
-export default function ProfileDropdown({setActive, setOpenProfileDropdown, setToken, setSession}) {
+export default function ProfileDropdown({setActive, setOpenProfileDropdown, setToken, setSession, setFetchCount}) {
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const navigate = useNavigate();
@@ -12,6 +12,8 @@ export default function ProfileDropdown({setActive, setOpenProfileDropdown, setT
     const handleLogout = () => {
         setToken(localStorage.removeItem('token'))
         setSession(localStorage.removeItem('user'))
+        // to clear the notification count
+        setFetchCount(true)
         // close log out confirm modal
         setShowLogoutModal(false);
         // close profile drop down
@@ -24,7 +26,7 @@ export default function ProfileDropdown({setActive, setOpenProfileDropdown, setT
     const handleViewProfile = () => {
         // Navigate to profile page
         const user = JSON.parse(localStorage.getItem('user'));
-        navigate(`/user/${user.user_id}`)
+        setActive("user")
         setOpenProfileDropdown(false);
     };
 

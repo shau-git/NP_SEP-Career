@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'; // Changed from next/navigation
+import { useNavigate, useLocation } from 'react-router-dom'; // Changed from next/navigation
 import { Bell, Building2, UserRound } from 'lucide-react';
 import Tooltip from './Tooltip'; 
 import Login from "../auth/Login" 
 import ProfileDropdown from '../auth/ProfileDropdown';
 
-const Nav = () => {
+const Nav = ({unreadCount, setFetchCount}) => {
     const [openLoginModal, setOpenLoginModal] = useState(false);
     const [openProfileDropdown, setOpenProfileDropdown] = useState(false);
     const [active, setActive] = useState('');
@@ -14,24 +14,21 @@ const Nav = () => {
     const profileDropdownRef = useRef(null);
 
     const navigate = useNavigate(); // Standard React Router hook
+    const location = useLocation().pathname.split('/')[1] // (eg: to get 'user' from '/user/40')
 
     // toogle to the active tab
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('user'));
         if (active) {
+            // get latest notification when clicking the nav bar
+            setFetchCount(true)
             if (active === "Home") {
                 navigate('/');
             } else if (currentUser) {
-                active==="user"? 
-                (   
-                    setOpenProfileDropdown(true)
-                ) :(
-                    navigate(`/${active}/${currentUser.user_id}`)
-                );
+                navigate(`/${active}/${currentUser.user_id}`);
             }
         }
     }, [active]);
-
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -53,7 +50,7 @@ const Nav = () => {
 
     // click function to navigate to different page (Profile, Company, notification, Home)
     const handleClick = (stateToActive) => { 
-        setActive(stateToActive);
+        
         const currentUser = JSON.parse(localStorage.getItem('user'));
         const token = localStorage.getItem('token') 
         if (!token || !currentUser) {
@@ -62,11 +59,12 @@ const Nav = () => {
             setToken(token)
             setSession(currentUser)
             if(stateToActive !== "user") {
-                navigate(`/${stateToActive}/${currentUser.user_id}`);
+                setActive(stateToActive);
             } else {
                 // open the profile dropdown if is not opened
                 !openProfileDropdown && setOpenProfileDropdown(true)
             }
+            
         }
     };
 
@@ -101,33 +99,39 @@ const Nav = () => {
                         <Tooltip name="Company">
                             <button 
                                 onClick={() => handleClick("usercompany")}
-                                className={`cursor-pointer group w-10 h-10 rounded-full ${token && session && active === "usercompany"? "border-purple-500 border-2":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
+                                className={`cursor-pointer group w-10 h-10 rounded-full ${token && session && location === "usercompany"? "border-purple-500 border-2":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
                             >
                                 <Building2 className="w-4.5 h-4.5" />
                             </button>
                         </Tooltip>
                     
-                        <Tooltip name="Notification">
-                            <button 
-                                onClick={() => handleClick("notification")}
-                                className={`cursor-pointer group w-10 h-10 rounded-full ${token && session && active === "notification"? "border-purple-500 border-2" :"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
-                            >
-                                <Bell className="w-4.5 h-4.5" />
-                            </button>
-                        </Tooltip>
+                        <div className="relative">
+                            <Tooltip name="Notification">
+                                <button 
+                                    onClick={() => handleClick("notification")}
+                                    className={`cursor-pointer group w-10 h-10 rounded-full ${token && session && location === "notification"? "border-purple-500 border-2" :"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
+                                >
+                                    <Bell className="w-4.5 h-4.5" />
+                                </button>
+                            </Tooltip>
+                            {unreadCount > 0 && (
+                                <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center text-xs font-bold border-2 border-slate-950">
+                                    {unreadCount}
+                                </span>
+                            )}
+                        </div>
                         
                         <div className="relative" ref={profileDropdownRef}>
                             <Tooltip name="Profile">
                                 <button 
                                     onClick={() => handleClick("user")}
-                                    className={`overflow-hidden cursor-pointer group w-10 h-10 rounded-full ${token && session && active === "user"? "border-purple-500 border-2 ":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all`}
+                                    className={`overflow-hidden cursor-pointer group w-10 h-10 rounded-full ${token && session && location === "user"? "border-purple-500 border-2 ":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all`}
                                 >
                                     <UserRound className="w-5 h-5" />
                                 </button>
                             </Tooltip>
-                            {openProfileDropdown && <ProfileDropdown {...{setActive, setOpenProfileDropdown, setToken, setSession}}/>}
+                            {openProfileDropdown && <ProfileDropdown {...{setFetchCount, setActive, setOpenProfileDropdown, setToken, setSession}}/>}
                         </div>
-                        
                     </div>
                 </div>
             </nav>

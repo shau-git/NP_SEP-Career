@@ -11,7 +11,21 @@ const getNotification = async (token) => {
     });
     return response;
 }
- 
+
+
+const getUnreadNotificationCount = async (token) => {
+
+    const response = await fetch(`${backend_domain}/api/notification/unread_count`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response;
+}
+
+
 const putOneNotification = async (notification_id, token) => {
     const response = await fetch(`${backend_domain}/api/notification/${notification_id}`, {
         method: 'PUT',
@@ -40,5 +54,6 @@ const putAllNotification = async (token) => {
 export {
     getNotification,
     putOneNotification,
-    putAllNotification
+    putAllNotification,
+    getUnreadNotificationCount
 }

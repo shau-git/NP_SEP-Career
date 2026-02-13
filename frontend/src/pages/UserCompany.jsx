@@ -6,7 +6,7 @@ import {toast} from "react-toastify"
 import {MapPin, Briefcase, Search, Building2, ChevronRight, X} from "lucide-react"
 import {PlusButton, InputTag, SelectTag, TextAreaTag, ActionsButton} from "../components/company/utils/company_util_config"
 
-const UserCompany = () => {
+const UserCompany = ({setFetchCount}) => {
 
     let {user_id} = useParams();
 	user_id = parseInt(user_id)
@@ -14,7 +14,7 @@ const UserCompany = () => {
     const navigate = useNavigate()
     const [session, setSession] = useState(JSON.parse(localStorage.getItem('user')))
     const [token, setToken] = useState(localStorage.getItem('token'))
-    const [userCompanies, setUserCompanies] = useState()
+    const [userCompanies, setUserCompanies] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -184,6 +184,9 @@ const UserCompany = () => {
             console.error('Failed to create company:', error);
             setErrors({ submit: 'Failed to create company. Please try again.' });
         }
+
+        // fetch latest unread notification count
+        setFetchCount(true)
     };
 
     const handleCloseCreateModal = () => {

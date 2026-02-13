@@ -37,6 +37,25 @@ const getNotifications = asyncWrapper(async (req, res) => {
 });
 
 
+// GET count of unread notifications
+const getUnreadNotificationCount = asyncWrapper(async (req, res) => {
+    // Assuming your auth middleware provides the user_id via req.user
+    const { user_id } = req.user;
+
+    const unreadCount = await Notification.count({
+        where: {
+            user_id: user_id,
+            is_read: false // Matches the typical naming convention for unread status
+        }
+    });
+
+    return res.status(200).json({
+        success: true,
+        data: unreadCount
+    });
+});
+
+
 // mark one notification as read
 const updateNotification = asyncWrapper(async (req, res) => {
 
@@ -101,6 +120,7 @@ const markAllNotificationsAsRead = asyncWrapper(async (req, res) => {
 
 module.exports = {
     getNotifications,
+    getUnreadNotificationCount,
     updateNotification,
     markAllNotificationsAsRead
 };

@@ -7,8 +7,8 @@ const Features = () => {
     const [jobPost, setJobPost] = useState(null)
     const key = useId()
 
-    const fetchJobPost = async (query) => {
-        const response = await getJobPost(query)
+    const fetchJobPost = async () => {
+        const response = await getJobPost()
         const data = await response.json();
         if(response.status === 200) {
             setJobPost(data)
@@ -18,7 +18,7 @@ const Features = () => {
     }
 
     useEffect(() => {
-        fetchJobPost("post=active")
+        fetchJobPost()
     }, [])
 
     return (

@@ -1,4 +1,4 @@
-import {Option} from "./utils_config"//"@/components/user/utils/utils_config"
+import {Option} from "./utils_config"
 
 const SelectTag = ({
     field,

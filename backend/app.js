@@ -33,9 +33,10 @@ const image_router = require("./routers/image_router")
 const company_router = require("./routers/company_router")
 const notification_router = require("./routers/notification_router")
 const jobapplicant_router = require("./routers/jobapplicant_router")
-
+const platform_router = require("./routers/platform_stats_router")
 
 // routes
+app.use('/api/platformstats', platform_router)
 app.use('/api/login', auth_router)
 app.use('/api/jobpost', jobpost_router)
 app.use('/api/user', user_router)

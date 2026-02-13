@@ -31,12 +31,12 @@ const Quote = () => {
         visible: { opacity: 1, y: 0 },
     };
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //     setCurrentQuote((prev) => (prev + 1) % quotes.length);
-    //     }, 8000);
-    //     return () => clearInterval(interval);
-    // }, []);
+    useEffect(() => {
+        const interval = setInterval(() => {
+        setCurrentQuote((prev) => (prev + 1) % quotes.length);
+        }, 8000);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <motion.section

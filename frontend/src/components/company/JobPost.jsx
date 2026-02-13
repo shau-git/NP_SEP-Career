@@ -144,7 +144,6 @@ const JobPost = ({jobs, company, setJobs, setOpenModal, token, isMember}) => {
                     )
                 ));
             
-                // if (editingId === experienceId) resetForm();
                 toast.success(data.message)
                 resetForm()
             } else {
@@ -504,16 +503,6 @@ const JobPost = ({jobs, company, setJobs, setOpenModal, token, isMember}) => {
                 </div>
                 
                 {isMember && (
-                    // <motion.button 
-                    //     whileHover={{
-                    //         boxShadow: "0 0 25px rgba(168,85,247,0.5)",
-                    //     }}
-                    //     onClick={() => {setIsAdding(true) }}
-                    //     className="cursor-pointer w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-linear-to-r from-purple-500 to-pink-500 rounded-lg"
-                    // >
-                    //     <Plus className="w-4 h-4" />
-                    //     <span className="sm:inline">Post New Job</span>
-                    // </motion.button>
                     <PlusButton  
                         title="Post New Job"
                         handleAdd={() => setIsAdding(true)}
