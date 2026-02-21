@@ -66,7 +66,7 @@ The digital economy has fundamentally changed how individuals approach career de
     -  View 2: smaller screen 
         * There is no sort by function in smaller screen size, but you can click the filters button to filter the job post.
             <br/><img src="./screenshots/jobsearch/2_mobile.png" width="300"  alt="mobile search job"/>
-            <br/><img src="./screenshots/jobsearch/3_mobileFIlter.png" width="300"  alt="mobile filter"/>
+            <br/><br/><img src="./screenshots/jobsearch/3_mobileFIlter.png" width="300"  alt="mobile filter"/>
             
             
     - If there is error when fetching job. Click try again to continue.
