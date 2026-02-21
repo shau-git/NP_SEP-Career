@@ -25,7 +25,7 @@ const addEducation = asyncWrapper(async (req, res) => {
     }
 
     const addedEducation = await Education.create({...value, user_id}); 
-    return res.status(201).json({message: "Experience record added successfully", data: addedEducation});
+    return res.status(201).json({message: "Education record added successfully", data: addedEducation});
     
 })
 
