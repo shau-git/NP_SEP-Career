@@ -6,7 +6,7 @@
   "scripts": {
     "test:unit": "jest tests/unit",
     "test:ui": "npx playwright test tests/ui --reporter=list --headed --project=chromium",
-    "test:api": "jest tests/api",
+    "test:api": "jest tests/api --detectOpenHandles --forceExit",
     "test:perf": "k6 run tests/perf/load_test.js"  
   },
   "repository": {

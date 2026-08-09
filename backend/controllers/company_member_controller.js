@@ -83,9 +83,7 @@ const addCompanyMember = asyncWrapper(async (req, res) => {
 
         if (!userExist) throw new NotFoundError(`User ID ${value.user_id} does not exist.`);
         if (!company) throw new NotFoundError(`Company ID ${company_id} not found.`);
-        if(isMember) {
-            return res.status(400).json({ message:`User id ${value.user_id} is/was member, please change the member status!`})            
-        }
+        if(isMember) throw new BadRequestError(`User id ${value.user_id} is/was member, please change the member status!`);
 
         // 2. Authorization (existing logic)
         const admin = await CompanyMember.findOne({
@@ -101,8 +99,6 @@ const addCompanyMember = asyncWrapper(async (req, res) => {
             { ...value, company_id },
             { transaction: t }
         );
-
-        // ... (Keep your Notification Logic here) ...
 
         await t.commit();
 

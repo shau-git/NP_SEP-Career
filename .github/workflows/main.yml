@@ -63,6 +63,8 @@ jobs:
           node-version: lts/*
       - name: Create auth directory
         run: mkdir -p tests/ui/auth/.auth
+      - name: Install root dependencies
+        run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
@@ -84,7 +86,7 @@ jobs:
           node-version: '25.5'
           cache: 'npm'
       - name: Start backend
-        uses: ./.github/actions/start-backend
+        uses: ./.github/actions/start-backend  
       - name: Start frontend
         uses: ./.github/actions/start-frontend
       # 1. Install k6 on the GitHub Actions runner machine, as there is something wrong if install from npm

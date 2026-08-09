@@ -17,7 +17,7 @@ describe("Integration test for [company_member] endpoint", () => {
     // close db conenction
     afterAll(async () => {
         await sequelize.close()
-    })
+    }, 10000)
 
     test(`POST /api/company/2/companymember   should add a company member when performed by admin or company owner`, async () => {
         let response = await request(app)
