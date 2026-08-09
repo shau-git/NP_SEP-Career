@@ -33,7 +33,22 @@ export default defineConfig({
     trace: 'on-first-retry',
     video: 'on'
   },
-
+  webServer: [
+    {
+      command: 'npm run start',
+      cwd: './backend',
+      url: 'http://localhost:3000',   
+      timeout: 120 * 1000,
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: 'npm run start',
+      cwd: './frontend',
+      url: 'http://localhost:5173', 
+      timeout: 120 * 1000,
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
   /* Configure projects for major browsers */
   projects: [
     {name: 'auth_setup', testDir: "./tests/ui/auth", testMatch: '/auth.setup.js'},

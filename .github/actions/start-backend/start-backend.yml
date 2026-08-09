@@ -1,0 +1,20 @@
+name: 'Start Backend'
+description: 'Installs backend dependencies and starts the server'
+runs:
+  using: "composite"
+  steps:
+    - name: Install backend dependencies
+      run: npm ci
+      working-directory: ./backend
+      shell: bash
+
+    - name: Start backend server
+      run: npm run start &
+      working-directory: ./backend
+      shell: bash
+
+    - name: Wait for backend to be ready
+      run: npx wait-on http://localhost:3000
+      shell: bash
+
+ 

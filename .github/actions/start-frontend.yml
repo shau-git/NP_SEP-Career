@@ -1,0 +1,14 @@
+name: 'Start Frontend'
+description: 'Installs frontend dependencies and starts the server'
+runs:
+  using: "composite"
+  steps:
+    - name: Install frontend dependencies
+      run: npm ci
+      working-directory: ./frontend
+      shell: bash
+
+    - name: Start frontend server
+      run: npm run start &
+      working-directory: ./frontend
+      shell: bash
