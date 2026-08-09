@@ -1,6 +1,6 @@
 const {test, expect} = require('@playwright/test')
 
-test('a user login to add an education record', async function({page}) {
+test('a user add an education record', async function({page}) {
     await page.goto('http://localhost:5173/')
 
     // click the profile icon to go to user profile
