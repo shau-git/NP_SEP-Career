@@ -90,6 +90,7 @@ const Nav = ({unreadCount, setFetchCount}) => {
                         onClick={() => {
                             setActive('Home');
                         }}
+                        id="Home"
                         className="cursor-pointer text-2xl font-bold bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                         CareerHub
                     </div>
@@ -98,6 +99,7 @@ const Nav = ({unreadCount, setFetchCount}) => {
                     <div className="flex items-center gap-3 text-white">
                         <Tooltip name="Company">
                             <button 
+                                id="usercompany"
                                 onClick={() => handleClick("usercompany")}
                                 className={`cursor-pointer group w-10 h-10 rounded-full ${token && session && location === "usercompany"? "border-purple-500 border-2":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
                             >
@@ -108,6 +110,7 @@ const Nav = ({unreadCount, setFetchCount}) => {
                         <div className="relative">
                             <Tooltip name="Notification">
                                 <button 
+                                    id="notification"
                                     onClick={() => handleClick("notification")}
                                     className={`cursor-pointer group w-10 h-10 rounded-full ${token && session && location === "notification"? "border-purple-500 border-2" :"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all `}
                                 >
@@ -124,6 +127,7 @@ const Nav = ({unreadCount, setFetchCount}) => {
                         <div className="relative" ref={profileDropdownRef}>
                             <Tooltip name="Profile">
                                 <button 
+                                    id="user"
                                     onClick={() => handleClick("user")}
                                     className={`overflow-hidden cursor-pointer group w-10 h-10 rounded-full ${token && session && location === "user"? "border-purple-500 border-2 ":"bg-white/10 border-white/20"} border flex items-center justify-center hover:bg-purple-500/20 transition-all`}
                                 >

@@ -1,0 +1,34 @@
+{
+  "name": "np-sep-career",
+  "version": "1.0.0",
+  "description": "The digital economy has fundamentally changed how individuals approach career development. With rapid growth in specialized sectors like IT, Healthcare, and Finance, there is an urgent need for centralized platforms that connect talent with the right opportunities. __NP Career Hub__ is a full-stack solution designed to streamline this process, offering a modern interface for job discovery and a secure environment for professional profile management.",
+  "main": "index.js",
+  "scripts": {
+    "test:unit": "jest tests/unit",
+    "test:ui": "npx playwright test tests/ui --reporter=list --headed --project=chromium",
+    "test:api": "jest tests/api",
+    "test:perf": "k6 run tests/perf/load_test.js"  
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shau-git/NP_SEP-Career.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/shau-git/NP_SEP-Career/issues"
+  },
+  "homepage": "https://github.com/shau-git/NP_SEP-Career#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.1.2",
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "jsonwebtoken": "^9.0.3"
+  }
+}

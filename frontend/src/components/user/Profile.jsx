@@ -93,7 +93,7 @@ const Profile = ({ session, token, user, user_id, setUser, Camera, MapPin, Brief
                                             value={roleDraft}
                                             onChange={(e) => setRoleDraft(e.target.value)}
                                             className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white/90 focus:outline-none focus:border-purple-500"
-                                            placeholder='John Doe'
+                                            placeholder='Job Role'
                                         />
                                         <SaveButton handleSave={handleSaveRole} title="Save"/>
                                     </div>
