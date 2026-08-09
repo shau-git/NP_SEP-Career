@@ -55,7 +55,7 @@ jobs:
   # 3. Job for Playwright E2E Tests
   playwright-test:
     timeout-minutes: 60
-    needs: [integration-tests]
+    needs: integration-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -85,7 +85,7 @@ jobs:
 
    # 4. Job for k6 Performance Tests
   k6-tests:
-  needs: [playwright-test]
+    needs: playwright-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
