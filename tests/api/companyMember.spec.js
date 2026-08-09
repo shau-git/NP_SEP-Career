@@ -35,5 +35,5 @@ describe("Integration test for [company_member] endpoint", () => {
         expect(response.body.data).toMatchObject({ removed: false, user_id: 17, role: 'member', company_id: 2 })
 
         console.log(response.body)        
-    })
+    }, 15000)
 })

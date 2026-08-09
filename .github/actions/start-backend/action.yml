@@ -13,8 +13,8 @@ runs:
       working-directory: ./backend
       shell: bash
 
-    - name: Wait for backend to be ready
-      run: npx wait-on http://localhost:3000
-      shell: bash
+    # - name: Wait for backend to be ready
+    #   run: npx wait-on http://localhost:3000
+    #   shell: bash
 
  

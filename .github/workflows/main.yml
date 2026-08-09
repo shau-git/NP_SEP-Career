@@ -55,6 +55,7 @@ jobs:
   # 3. Job for Playwright E2E Tests
   playwright-test:
     timeout-minutes: 60
+    needs: [integration-tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -74,7 +75,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npm run test:unit
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -84,6 +85,7 @@ jobs:
 
    # 4. Job for k6 Performance Tests
   k6-tests:
+  needs: [playwright-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

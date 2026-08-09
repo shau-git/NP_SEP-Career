@@ -21,6 +21,12 @@ const sequelize = new Sequelize(connectionString, {
             require: true,
             rejectUnauthorized: false, 
         },
+    },
+    pool: {
+        max: 3,      // fewer connections held open at once
+        min: 0,
+        acquire: 30000,
+        idle: 10000
     }
 });
 
