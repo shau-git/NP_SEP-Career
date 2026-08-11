@@ -37,6 +37,7 @@ jobs:
 
   # 2. Job for Integration Tests  
   integration-tests:
+    needs: unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
