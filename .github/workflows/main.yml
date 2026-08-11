@@ -98,7 +98,7 @@ jobs:
         uses: ./.github/actions/start-backend  
       - name: Start frontend
         uses: ./.github/actions/start-frontend
-      # 1. Install k6 on the GitHub Actions runner machine, as there is something wrong if install from npm
+      # 1. Install k6 on the GitHub Actions runner machine, as there is something wrong if install from npm.
       - name: Setup k6
         uses: grafana/setup-k6-action@v1
       - name: Run k6 load test
