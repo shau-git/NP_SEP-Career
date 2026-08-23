@@ -419,7 +419,7 @@ INSERT INTO notification (user_id, sender_id, company_id, job_post_id, type, mes
 
 -- USER ID 37, for test
 INSERT INTO "user" (name, role, image, email, password, summary, image_public_id) VALUES
-('SJ', null, null, 'k.shaujie@gmail.com', 'password', null, null),
+('SJ', null, null, 'k.shaujie@gmail.com', 'password', null, null);
 
 
 INSERT INTO company_member (company_id, user_id, role, removed) VALUES
