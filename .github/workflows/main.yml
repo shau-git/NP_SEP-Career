@@ -71,7 +71,6 @@ jobs:
       # Set up the Database and Tables FIRST before starting any server
       - name: Setup Database and Tables
         uses: ./.github/actions/setup-db
-        working-directory: ./backend
       - name: Install root dependencies
         run: npm ci
       - name: Start backend
