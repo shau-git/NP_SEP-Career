@@ -186,8 +186,7 @@ INSERT INTO "user" (name, role, image, email, password, summary, image_public_id
 ('Jackson Hall', 'Full Stack Developer', null, 'hall@stack.io', 'passw', 'Versatile developer with SQL.', NULL),
 ('Amelia Young', 'Digital Designer', null, 'young@creative.net', 'passw', 'Focusing on branding.', NULL),
 ('Henry Adams', 'Operations Director', null, 'adams@logistics.com', 'passw', 'Streamlining internal processes.', NULL);
--- USER ID 37, for test
-('SJ', null, null, 'k.shaujie@gmail.com', 'password', null, null),
+
 
 
 -- 2. EXPERIENCE
@@ -412,3 +411,16 @@ INSERT INTO "job_applicant" (user_id, job_post_id, status, expected_salary, appl
 INSERT INTO notification (user_id, sender_id, company_id, job_post_id, type, message, created_at, is_read) VALUES 
 (1, 2, 1, 1, 'APPLICANT_STATUS_CHANGE', 'Interview set for React Dev.', '2026-01-20', false),
 (2, 1, 1, 1, 'APPLICANT_NEW', 'Shau applied for React role.', '2026-01-15', true);
+
+
+
+
+-- for Test
+
+-- USER ID 37, for test
+INSERT INTO "user" (name, role, image, email, password, summary, image_public_id) VALUES
+('SJ', null, null, 'k.shaujie@gmail.com', 'password', null, null),
+
+
+INSERT INTO company_member (company_id, user_id, role, removed) VALUES
+(2, 37, 'admin', false);
