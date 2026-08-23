@@ -186,7 +186,8 @@ INSERT INTO "user" (name, role, image, email, password, summary, image_public_id
 ('Jackson Hall', 'Full Stack Developer', null, 'hall@stack.io', 'passw', 'Versatile developer with SQL.', NULL),
 ('Amelia Young', 'Digital Designer', null, 'young@creative.net', 'passw', 'Focusing on branding.', NULL),
 ('Henry Adams', 'Operations Director', null, 'adams@logistics.com', 'passw', 'Streamlining internal processes.', NULL);
-
+-- USER ID 37, for test
+('SJ', null, null, 'k.shaujie@gmail.com', 'password', null, null),
 
 
 -- 2. EXPERIENCE
