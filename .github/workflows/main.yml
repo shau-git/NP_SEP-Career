@@ -13,7 +13,7 @@ env:
 
   # DATABASE_URL: ${{ secrets.DATABASE_URL }}
   # Automatically assemble the connection string for your backend to use
-  DATABASE_URL: postgres://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/${{ secrets.TEST_DB_NAME }}
+  DATABASE_URL: postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}
 
   JWT_SECRET: ${{ secrets.JWT_SECRET }}
   JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
