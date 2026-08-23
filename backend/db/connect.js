@@ -16,12 +16,12 @@ const sequelize = new Sequelize(connectionString, {
     // Specify the database dialect
     dialect: 'postgres', 
     logging: true, // Disable logging for cleaner console output
-    dialectOptions: {
+    dialectOptions: process.env.NODE_ENV === 'production' ? {
         ssl: {
             require: true,
-            rejectUnauthorized: false, 
+            rejectUnauthorized: false,
         },
-    },
+    } : {},
     pool: {
         max: 3,      // fewer connections held open at once
         min: 0,
