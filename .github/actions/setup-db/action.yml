@@ -15,4 +15,4 @@ runs:
       env:
         PGPASSWORD: ${{ env.DB_PASSWORD }}
       run: |
-        psql -h localhost -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }} -f /backend/Table.sql
+        psql -h localhost -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }} -f backend/Table.sql
