@@ -1,0 +1,18 @@
+name: 'Setup Test Database'
+description: 'Waits for PostgreSQL to start and runs the SQL initialization script'
+runs:
+  using: "composite"
+  steps:
+    - name: Wait for PostgreSQL
+      shell: bash
+      run: |
+        until pg_isready -h localhost -p 5432 -U ${{ env.DB_USER }}; do
+          sleep 1
+        done
+
+    - name: Run Raw SQL Script to Create Tables
+      shell: bash
+      env:
+        PGPASSWORD: ${{ env.DB_PASSWORD }}
+      run: |
+        psql -h localhost -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }} -f ./backend/Table.sql

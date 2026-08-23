@@ -6,7 +6,15 @@ on:
     branches: [ main, master ]
 
 env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_NAME: ${{ secrets.TEST_DB_NAME }}
+  DB_PORT: 5432
+
+  # DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  # Automatically assemble the connection string for your backend to use
+  DATABASE_URL: postgres://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/${{ secrets.TEST_DB_NAME }}
+
   JWT_SECRET: ${{ secrets.JWT_SECRET }}
   JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
   PORT: ${{ secrets.PORT }}
@@ -39,17 +47,35 @@ jobs:
   integration-tests:
     needs: unit-tests
     runs-on: ubuntu-latest
+    # create postgres container (service containers (services:) cannot be separated into a standalone file or a composite action.)
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '25.5'
           cache: 'npm'
+      # Set up the Database and Tables FIRST before starting any server
+      - name: Setup Database and Tables
+        uses: ./.github/actions/setup-db
+        working-directory: ./backend
       - name: Install root dependencies
         run: npm ci
-      - name: Install backend dependencies
-        run: npm ci
-        working-directory: ./backend
+      - name: Start backend
+        uses: ./.github/actions/start-backend
       - name: Run Integration Tests
         run: npm run test:api
 
@@ -58,6 +84,21 @@ jobs:
     timeout-minutes: 60
     needs: integration-tests
     runs-on: ubuntu-latest
+    # create postgres container (service containers (services:) cannot be separated into a standalone file or a composite action.)
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -65,14 +106,24 @@ jobs:
           node-version: lts/*
       - name: Create auth directory
         run: mkdir -p tests/ui/auth/.auth
+
+      # STEP 1: Set up Database and Tables FIRST
+      - name: Setup Database and Tables
+        uses: ./.github/actions/setup-db
+
       - name: Install root dependencies
         run: npm ci
-      - name: Install backend dependencies
-        run: npm ci
-        working-directory: ./backend
-      - name: Install frontend dependencies
-        run: npm ci
-        working-directory: ./frontend
+      # - name: Install backend dependencies
+      #   run: npm ci
+      #   working-directory: ./backend
+      # - name: Install frontend dependencies
+      #   run: npm ci
+      #   working-directory: ./frontend
+      - name: Start backend
+        uses: ./.github/actions/start-backend
+      - name: Start frontend
+        uses: ./.github/actions/start-frontend
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
