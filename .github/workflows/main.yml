@@ -146,12 +146,28 @@ jobs:
   k6-tests:
     needs: playwright-test
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '25.5'
           cache: 'npm'
+      - name: Setup Database and Tables
+        uses: ./.github/actions/setup-db
       - name: Start backend
         uses: ./.github/actions/start-backend  
       - name: Start frontend
