@@ -125,8 +125,15 @@ jobs:
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
+      - name: Insert test user to db
+        run: npm run insert_testdata
+
+      - name: Run auth setup to cache the auth
+        run: npm run playwright:auth_setup
+
       - name: Run Playwright tests
-        run: npm run test:unit
+        run: npm run test:playwright
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

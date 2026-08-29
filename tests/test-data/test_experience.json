@@ -1,0 +1,11 @@
+{
+    "addExperience": {
+        "company": "HP",
+        "role": "Technical Specialist",
+        "years": "0-2",
+        "start_date": "2024-05-22",
+        "end_date": "present",
+        "employment_type": "full time",
+        "description": "Some description"
+    }
+}

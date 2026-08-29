@@ -1,3 +1,7 @@
+-- DROP SCHEMA public CASCADE;
+-- CREATE SCHEMA public
+
+
 -- 1. Create User table
 CREATE TABLE IF NOT EXISTS "user" (
     user_id SERIAL PRIMARY KEY,
@@ -356,10 +360,10 @@ INSERT INTO job_post (company_id, title, industry, requirements, responsibilitie
 
 -- JOB APPLICANT
 INSERT INTO "job_applicant" (user_id, job_post_id, status, expected_salary, applied_date, interview_date, interview_time) VALUES 
-(12, 1, 'INTERVIEW', 4500, '2026-01-10', '2026-02-15', '10:00AM'),
+(12, 1, 'PENDING', 4500, '2026-01-10', '2026-02-15', '10:00AM'),
 (15, 1, 'PENDING', 4800, '2026-01-12', NULL, NULL),
-(18, 2, 'REJECTED', 5000, '2026-01-05', NULL, NULL),
-(20, 3, 'ACCEPTED', 6000, '2026-01-08', '2026-01-20', '02:30PM'),
+(18, 2, 'PENDING', 5000, '2026-01-05', NULL, NULL),
+(20, 3, 'PENDING', 6000, '2026-01-08', '2026-01-20', '02:30PM'),
 (22, 4, 'PENDING', 4200, '2026-01-15', NULL, NULL),
 (25, 5, 'INTERVIEW', 5500, '2026-01-18', '2026-02-10', '11:00AM'),
 (28, 6, 'WITHDRAWN', 4700, '2026-01-20', NULL, NULL),
@@ -412,15 +416,3 @@ INSERT INTO notification (user_id, sender_id, company_id, job_post_id, type, mes
 (1, 2, 1, 1, 'APPLICANT_STATUS_CHANGE', 'Interview set for React Dev.', '2026-01-20', false),
 (2, 1, 1, 1, 'APPLICANT_NEW', 'Shau applied for React role.', '2026-01-15', true);
 
-
-
-
--- for Test
-
--- USER ID 37, for test
-INSERT INTO "user" (name, role, image, email, password, summary, image_public_id) VALUES
-('SJ', null, null, 'k.shaujie@gmail.com', 'password', null, null);
-
-
-INSERT INTO company_member (company_id, user_id, role, removed) VALUES
-(2, 37, 'admin', false);

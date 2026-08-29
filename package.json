@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test:unit": "jest tests/unit",
-    "test:ui": "npx playwright test tests/ui --reporter=list --headed --project=chromium",
     "test:api": "jest tests/api --detectOpenHandles --forceExit",
+
+    "insert_testdata": "node ./backend/test/runInsert.js",
+    "playwright:auth_setup": "npx playwright test --project=auth_setup --reporter=list",
+    "test:playwright": "npx playwright test tests/playwright --reporter=list --project=chromium",
+    
     "test:perf": "k6 run tests/perf/load_test.js"  
   },
   "repository": {

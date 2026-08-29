@@ -9,7 +9,7 @@ const sequelize = require("../db/connect")
 const { ForbiddenError, NotFoundError, BadRequestError, UnauthenticatedError } = require('../errors/errors');
 const asyncWrapper = require('./utils/wrapper');
 
-// --- GET: View job applicants (For Users) ---
+// --- GET: View job applicants (For Users to view their own application) ---
 const getJobApplicationsUser = asyncWrapper(async (req, res) => {
     const { user_id } = req.params;
     const session_user_id = req.user.user_id;

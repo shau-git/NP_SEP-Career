@@ -13,7 +13,8 @@ import { defineConfig, devices } from '@playwright/test';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './tests',
+  timeout: 60000,
+  testDir: './tests/playwright',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -26,33 +27,45 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    actionTimeout: 10000,
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
+    extraHTTPHeaders: {
+      Accept: 'application/json',
+      'Content-type': 'application/json'
+    },
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    video: 'on'
+    video: 'on',
+    //storageState: 'tests/playwright/auth/.auth/user.json', // page in the Fixture will use this
   },
 
   /* Configure projects for major browsers */
   projects: [
-    {name: 'auth_setup', testDir: "./tests/ui/auth", testMatch: '/auth.setup.js'},
+    //{name: 'auth_setup', testDir: "./tests/ui/auth", testMatch: '/auth.setup.js'},
+    { name: 'auth_setup', testDir: "tests/playwright/auth", testMatch: /.*\.setup\.js/},
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], storageState: 'tests/ui/auth/.auth/user.json' },
-      dependencies: ['auth_setup']
+      use: { ...devices['Desktop Chrome']}
+      /*
+      use: { ...devices['Desktop Chrome'], storageState: 'tests/playwright/auth/.auth/user.json'}, 
+      dependencies: ['setup']
+      */
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], storageState: 'tests/ui/auth/.auth/user.json' },
-      dependencies: ['auth_setup']
+      // use: { ...devices['Desktop Firefox'], storageState: 'tests/ui/auth/.auth/user.json' },
+      // dependencies: ['auth_setup']
+      use: { ...devices['Desktop Firefox']}
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], storageState: 'tests/ui/auth/.auth/user.json' },
-      dependencies: ['auth_setup']
+      // use: { ...devices['Desktop Safari'], storageState: 'tests/ui/auth/.auth/user.json' },
+      // dependencies: ['auth_setup']
+      use: { ...devices['Desktop Safari']}
     },
 
     /* Test against mobile viewports. */

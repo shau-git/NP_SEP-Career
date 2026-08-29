@@ -9,9 +9,8 @@ describe("Integration test for [company_member] endpoint", () => {
 
     beforeEach(() => {
         // Generate a valid JWT token for an authorized company admin before each test
-        const companyAdmin = { user_id: 37, email: 'k.shaujie@gmail.com' , name: 'SJ'}
+        const companyAdmin = { user_id: 11, email: 'Yeager@example.com' , name: 'Eren Yeager'}
         token = jwt.sign( companyAdmin , process.env.JWT_SECRET, { expiresIn: process.env.JWT_LIFETIME })
-        console.log(token)
     })
 
     // close db conenction
@@ -34,6 +33,6 @@ describe("Integration test for [company_member] endpoint", () => {
         // assert response body contains: newly added user id , the role & the company id
         expect(response.body.data).toMatchObject({ removed: false, user_id: 17, role: 'member', company_id: 2 })
 
-        console.log(response.body)        
+        //console.log(response.body)        
     }, 15000)
 })

@@ -1,0 +1,36 @@
+{
+    
+    "accounts": [
+        {   
+            "name": "Eren",
+            "companyRole": "user",
+            "email": "user@test.com",
+            "password": "test12345",
+            "storageState": "tests/playwright/auth/.auth/user.json"
+        },
+
+        {   
+            "name": "Mikasa",
+            "companyRole": "member",
+            "email": "member@test.com",
+            "password": "test12345",
+            "storageState": "tests/playwright/auth/.auth/member.json" 
+        },
+
+        {   
+            "name": "Armin",
+            "companyRole": "admin",
+            "email": "admin@test.com",
+            "password": "test12345",
+            "storageState": "tests/playwright/auth/.auth/admin.json"
+        },
+
+        {
+            "name": "Levi",
+            "companyRole": "owner",
+            "email": "owner@test.com",
+            "password": "test12345",
+            "storageState": "tests/playwright/auth/.auth/owner.json"
+        }
+    ]
+}

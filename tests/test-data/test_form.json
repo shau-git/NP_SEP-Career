@@ -1,0 +1,32 @@
+{
+    "createCompanyForm": {
+        "companyName": "NP",
+        "industry": "Education",
+        "location": "Clementi",
+        "description": "The Best Poly"
+    },
+    "createJobPostForm": {
+        "jobTitle": "Computer Teacher",
+        "industry": "IT & Technology",
+        "employmentType": "full time",
+        "experience": "2-5",
+        "salaryStart": "4000",
+        "salaryEnd": "5000",
+        "location": "onsite",
+        "contactEmail": "tech@example.com",
+        "summary": "Teaching computer skills",
+        "description": "You will be training computer skills and knowledge to students",
+        "requirement": [
+            "Bachelor degree in computing or related fields",
+            "Passionate in teaching"
+        ],
+        "responsibilities": [
+            "Assess student progress, grade assignments, and provide constructive feedback.",
+            "Plan and deliver engaging lessons aligned with the curriculum to support student growth."
+        ],
+        "benefits": [
+            "18 Days Annual Leave",
+            "Year End Bonus"
+        ]
+    }
+}
