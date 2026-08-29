@@ -84,7 +84,7 @@ test.describe("Company Profile Testing", () => {
 
         // Assert
         await expect(req.status()).toBe(401)
-        //await expect(res.message).toContain('This action is forbidden')
+        await expect(res.message).toContain('Authentication invalid')
     })
 
     
@@ -100,4 +100,4 @@ test.describe("Company Profile Testing", () => {
     })
 })
 
-// npx playwright test ./tests/playwright/api/tests/user/userProfile.spec.js --project=chromium --reporter=list
+// npx playwright test ./tests/playwright/tests/backend/user/userProfile.spec.js --project=chromium --reporter=list
