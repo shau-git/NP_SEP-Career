@@ -104,7 +104,7 @@ jobs:
         with:
           node-version: lts/*
       - name: Create auth directory
-        run: mkdir -p tests/ui/auth/.auth
+        run: mkdir -p tests/playwright/auth/.auth   
 
       # STEP 1: Set up Database and Tables FIRST
       - name: Setup Database and Tables
