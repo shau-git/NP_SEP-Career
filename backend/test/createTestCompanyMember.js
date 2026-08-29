@@ -41,4 +41,4 @@ async function createTestCompanyMember() {
 
 
 //node ./backend/test/createTestCompanyMember.js
-module.exports = createTestCompanyMember
+module.exports = createTestCompanyMember  
