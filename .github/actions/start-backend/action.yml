@@ -14,12 +14,7 @@ runs:
       shell: bash
 
     - name: Wait for backend to be ready
-      run: npx wait-on http://localhost:${{ env.PORT }} -t 60000
+      run: npx wait-on tcp://localhost:${{ env.PORT }} -t 60000
       shell: bash
     
-    - name: Show backend logs on failure
-      if: failure()
-      run: cat /tmp/backend.log
-      shell: bash
-
  
