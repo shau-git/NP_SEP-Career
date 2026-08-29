@@ -9,11 +9,23 @@ runs:
       shell: bash
 
     - name: Start frontend server
-      run: npm run start &
+      run: |
+        setsid npm run start > "$RUNNER_TEMP/frontend.log" 2>&1 < /dev/null &
+      # run: npm run start &
       working-directory: ./frontend
       shell: bash
 
     # npm i -D wait-on
+    - name: Debug port
+      run: |
+        netstat -tlnp 2>/dev/null || ss -tlnp
+      shell: bash
+
     - name: Wait for frontend to be ready
-      run: npx wait-on tcp://localhost:5173 -t 60000
+      run: npx wait-on tcp:localhost:$FRONTEND_PORT -t 60000
+      shell: bash
+
+    - name: Show frontend log on failure
+      if: failure()
+      run: cat "$RUNNER_TEMP/frontend.log" || true
       shell: bash
