@@ -14,7 +14,7 @@ runs:
       shell: bash
 
     - name: Wait for backend to be ready
-      run: npx wait-on tcp://localhost:${{ env.PORT }} -t 60000
+      run: npx wait-on tcp://localhost:$PORT -t 60000
       shell: bash
     
  
