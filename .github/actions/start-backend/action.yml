@@ -9,18 +9,24 @@ runs:
       shell: bash
 
     - name: Start backend server
-      run: npm run start &
+      run: |
+        setsid npm run start > "$RUNNER_TEMP/backend.log" 2>&1 < /dev/null &
+      #run: npm run start &
       working-directory: ./backend
       shell: bash
 
     - name: Debug port
       run: |
-        echo "PORT is: $PORT"
         netstat -tlnp 2>/dev/null || ss -tlnp
       shell: bash
-      
+
     - name: Wait for backend to be ready
-      run: npx wait-on tcp://localhost:3000 -t 60000
+      run: npx wait-on tcp:localhost:$PORT -t 60000
+      shell: bash
+
+    - name: Show backend log on failure
+      if: failure()
+      run: cat "$RUNNER_TEMP/backend.log" || true
       shell: bash
     
  
