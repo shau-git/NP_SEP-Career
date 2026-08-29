@@ -12,3 +12,8 @@ runs:
       run: npm run start &
       working-directory: ./frontend
       shell: bash
+
+    # npm i -D wait-on
+    - name: Wait for frontend to be ready
+      run: npx wait-on http://localhost:5173 -t 60000
+      shell: bash

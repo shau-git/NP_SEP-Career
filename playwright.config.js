@@ -44,7 +44,7 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     //{name: 'auth_setup', testDir: "./tests/ui/auth", testMatch: '/auth.setup.js'},
-    { name: 'auth_setup', testDir: "tests/playwright/auth", testMatch: /.*\.setup\.js/},
+    { name: 'auth_setup', testDir: "tests/playwright/auth", testMatch: /.*\.setup\.js/, use: { ...devices['Desktop Chrome']}},
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome']}
@@ -88,7 +88,7 @@ export default defineConfig({
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
-  
+
   // webServer: process.env.CI ? [
   //   {
   //     command: 'npm run start',

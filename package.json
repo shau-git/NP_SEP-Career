@@ -6,12 +6,10 @@
   "scripts": {
     "test:unit": "jest tests/unit",
     "test:api": "jest tests/api --detectOpenHandles --forceExit",
-
     "insert_testdata": "node ./backend/test/runInsert.js",
     "playwright:auth_setup": "npx playwright test --project=auth_setup --reporter=list",
     "test:playwright": "npx playwright test tests/playwright --reporter=list --project=chromium",
-    
-    "test:perf": "k6 run tests/perf/load_test.js"  
+    "test:perf": "k6 run tests/perf/load_test.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +27,8 @@
     "@playwright/test": "^1.62.1",
     "@types/node": "^26.1.2",
     "jest": "^30.4.2",
-    "supertest": "^7.2.2"
+    "supertest": "^7.2.2",
+    "wait-on": "^9.1.0"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
