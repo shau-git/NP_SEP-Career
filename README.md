@@ -29,6 +29,8 @@ The digital economy has fundamentally changed how individuals approach career de
    - [Cloudinary](https://cloudinary.com/) : media hosting for profile images.
 4. Database : 
    - [Neon](https://neon.com/) : It provides a serverless, scalable PostgreSQL database that’s easy to deploy and manage.
+5. Testing :
+    - [Playwright](https://playwright.dev/) : It provides reliable cross-browser automation with built-in auto-waiting, helping reduce flaky tests.
 5. Deployment:
     - Frontend: [vercel](https://vercel.com/shaus-projects)
     - Backend: [render](https://render.com/)
