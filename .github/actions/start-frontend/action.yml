@@ -17,3 +17,8 @@ runs:
     - name: Wait for frontend to be ready
       run: npx wait-on http://localhost:5173 -t 60000
       shell: bash
+
+    - name: Show Frontend logs on failure
+      if: failure()
+      run: cat /tmp/frontend.log
+      shell: bash
