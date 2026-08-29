@@ -15,13 +15,8 @@ describe('"linkController" unit test - User Profile Links', () => {
     // Shared mock data used across multiple test cases
     const mockPayload = { user_id: 1, name: 'SJ', email: 'ksj@gmail.com' }
 
-    const mockNewLink = { 
-        link_id: 1, 
-        user_id: 4, 
-        type: 'GitHub', 
-        url: 'https://github.com/shau-git/NP_SEP-Career' 
-    }
-
+    const mockNewLink = { link_id: 1, user_id: 4, type: 'GitHub', url: 'https://github.com/shau-git/NP_SEP-Career'}
+         
     beforeEach(() => {
         // Clear all mock call histories before each test
         jest.clearAllMocks()
@@ -35,12 +30,7 @@ describe('"linkController" unit test - User Profile Links', () => {
     test("updateLink() should update link record and return success response", async () => {
         // STUB: Canned test data objects
         // Represents an existing record retrieved from the database during findOne checks
-        const mockExistingLink = { 
-            link_id: 1, 
-            user_id: 1, 
-            type: 'GitHub', 
-            url: 'https://github.com/shau-git/juice-shop' 
-        }
+        const mockExistingLink = { link_id: 1, user_id: 1, type: 'GitHub', url: 'https://github.com/shau-git/juice-shop'}
 
         // Arrange: Build mock request and response objects
         const req = { user: mockPayload, params: { link_id: 1 }, body: mockNewLink }
